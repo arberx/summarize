@@ -1,0 +1,39 @@
+// 486 Outline
+
+/*Sentence Class*/
+    original sentence (string)
+    preprocessed list of tokens
+    sentence score (float)
+
+/*Map from tokens to score*/
+/*Function to get frequency*/
+
+
+1) Prepocess ( Make sure that we properly handle periods, so that we can keep sentences together. )
+    -Split by sentence(check for a bunch of stuff(titles)), check for period, !, ? , space , capital letter
+    -Tokenize each sentence
+    -Stopword removal
+    -Stemming
+
+2) Calculate the occurrence of each word in the text.
+3) Rank sentences by the sum of their words' points.
+4) Return X of the most highly ranked sentences in chronological order.
+
+
+****Have to do evaluation of the text****
+
+
+
+/* From smmry */
+The core algorithm summarizes in 7 simple steps:
+
+1) Associate words with their grammatical counterparts. (e.g. "city" and "cities")
+2) Calculate the occurrence of each word in the text.
+*3) Assign each word with points depending on their popularity.
+4) Detect which periods represent the end of a sentence. (e.g "Mr." does not).
+5) Split up the text into individual sentences.
+6) Rank sentences by the sum of their words' points.
+7) Return X of the most highly ranked sentences in chronological order.
+
+
+
