@@ -4,6 +4,16 @@
 # EECS 486 Final Project
 # splits a given block of text into sentences.
 
+abbreviations = {
+	"mr." : 1,
+	"mrs." : 1,
+	"ms." : 1,
+	"dr." : 1,
+	"sr." : 1,
+	"jr." : 1,
+	"st." : 1,
+}
+
 def findPunctuation(text, start)
 	locations = []
 
@@ -29,9 +39,15 @@ def findPunctuation(text, start)
 	else:
 		return min(locations)
 
+def findAbbreviation(text, start):
+	for i in range(2, 4):
+		if punctuationIdx >= i:
+			if text[punctuationIdx - i : punctuationIdx] in abbreviations:
+				return true
 
 def sentenceSeparator(text):
 	sentences = []
+	text = text.lower
 
 	# Index of the beginning of a sentence
 	sentenceStart = 0
@@ -62,8 +78,14 @@ def sentenceSeparator(text):
 
 		# Handling for periods (these will require the most exception-checking)
 		else:
-			
-
+			if findAbbreviation(text, punctuationIdx):
+				punctuationIdx = findPunctuation(text, punctuationIdx + 1)
+				continue
+					
+			sentences.append(text[sentenceStart:punctuationIdx])
+			sentenceStart = punctuationIdx + 1
+			punctuationIdx = findPunctuation(text, sentenceStart)
+			continue
 
 
 	return sentences
