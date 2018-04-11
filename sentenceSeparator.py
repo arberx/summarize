@@ -14,7 +14,7 @@ abbreviations = {
 	"st." : 1,
 }
 
-def findPunctuation(text, start)
+def findPunctuation(text, start):
 	locations = []
 
 	period = text.find('.', start)
@@ -39,15 +39,17 @@ def findPunctuation(text, start)
 	else:
 		return min(locations)
 
-def findAbbreviation(text, start):
+def findAbbreviation(text, punctuationIdx):
 	for i in range(2, 4):
 		if punctuationIdx >= i:
-			if text[punctuationIdx - i : punctuationIdx] in abbreviations:
-				return true
+			if text[punctuationIdx - i : punctuationIdx + 1] in abbreviations:
+				return True
+
+	return False
 
 def sentenceSeparator(text):
 	sentences = []
-	text = text.lower
+	text = text.lower()
 
 	# Index of the beginning of a sentence
 	sentenceStart = 0
@@ -57,21 +59,21 @@ def sentenceSeparator(text):
 	while(punctuationIdx != -1):
 		# Handling for newlines (right now, always sentence separators)
 		if text[punctuationIdx] == '\n':
-			sentences.append(text[sentenceStart:punctuationIdx])
+			sentences.append(text[sentenceStart:punctuationIdx + 1])
 			sentenceStart = punctuationIdx + 1
 			punctuationIdx = findPunctuation(text, sentenceStart)
 			continue
 
 		# Handling for question marks (right now, always sentence separators)
 		elif text[punctuationIdx] == '?':
-			sentences.append(text[sentenceStart:punctuationIdx])
+			sentences.append(text[sentenceStart:punctuationIdx + 1])
 			sentenceStart = punctuationIdx + 1
 			punctuationIdx = findPunctuation(text, sentenceStart)
 			continue
 
 		# Handling for exclamation marks (right now, always sentence separators)
 		elif text[punctuationIdx] == '!':
-			sentences.append(text[sentenceStart:punctuationIdx])
+			sentences.append(text[sentenceStart:punctuationIdx + 1])
 			sentenceStart = punctuationIdx + 1
 			punctuationIdx = findPunctuation(text, sentenceStart)
 			continue
@@ -81,8 +83,8 @@ def sentenceSeparator(text):
 			if findAbbreviation(text, punctuationIdx):
 				punctuationIdx = findPunctuation(text, punctuationIdx + 1)
 				continue
-					
-			sentences.append(text[sentenceStart:punctuationIdx])
+
+			sentences.append(text[sentenceStart:punctuationIdx + 1])
 			sentenceStart = punctuationIdx + 1
 			punctuationIdx = findPunctuation(text, sentenceStart)
 			continue
@@ -92,4 +94,6 @@ def sentenceSeparator(text):
 
 # Quick main function for testing
 if __name__ == '__main__':
-	text = 
+	text = "Hello world! I am Mr. Rees. Did you enjoy taking EECS 486? I enjoyed it much more than EECS 482. Dr. Kasicki is great but the projects are very difficult."
+	sentences = sentenceSeparator(text)
+	print sentences
