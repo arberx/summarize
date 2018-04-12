@@ -10,11 +10,9 @@ import re
 import pprint
 import operator
 import flask
-# import summarize
 from summarize import app
 from porterstemmer import PorterStemmer
 from preprocess import stemwords, removeStopwords, removeSGML, tokenizeText
-
 
 DIRECTORY = os.getcwd()
 
@@ -35,10 +33,8 @@ class Sentence(object):
 
 def main(args):
     '''Input is file that text we want to summarize'''
-    read_data = args
-    # with open(DIRECTORY + '/' + str(args[0]), 'r') as read_data:
 
-    # read_data = read_data.readlines()[0]
+    read_data = args
 
     # make a list of the sentences(currently doesn't take into account Mr.)
     sentences = re.findall(r"[A-Z].*?[\.!?]",
@@ -101,4 +97,3 @@ def submit():
 if __name__ == '__main__':
     '''Run through the command line take in arguments'''
     main(sys.argv[1:])
-    # main(['test.txt'])
