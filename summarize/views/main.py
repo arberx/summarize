@@ -41,7 +41,8 @@ def main(args):
     # read_data = read_data.readlines()[0]
 
     # make a list of the sentences(currently doesn't take into account Mr.)
-    sentences = re.findall("[A-Z].*?[\.!?]", read_data, re.MULTILINE | re.DOTALL)
+    sentences = re.findall(r"[A-Z].*?[\.!?]",
+                           read_data, re.MULTILINE | re.DOTALL)
 
     # uniq words dictionary
     uniqWords = {}
@@ -64,12 +65,9 @@ def main(args):
 
         finalList.append(Sentence(sentence, toks, score))
 
-
     sortedList = sorted(finalList, key=operator.attrgetter('score'))
 
     return sortedList
-    # for top in sortedList:
-    # print(top.sentence)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -82,17 +80,9 @@ def mainRoute():
         }
         return flask.render_template('summary.html', context=context)
 
-    if flask.request.method == 'POST':
-        context = {
-            'type': False
-        }
-
-        # get the form contents
-        text = flask.request.form['summary']
-
-        return flask.render_template('summary.html', context=context)
-
     return 'Error'
+
+
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
 
@@ -110,5 +100,5 @@ def submit():
 
 if __name__ == '__main__':
     '''Run through the command line take in arguments'''
-    # main(sys.argv[1:])
-    main(['test.txt'])
+    main(sys.argv[1:])
+    # main(['test.txt'])
