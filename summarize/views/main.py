@@ -9,6 +9,9 @@ import os
 import re
 import pprint
 import operator
+import flask
+# import summarize
+from summarize import app
 from porterstemmer import PorterStemmer
 from preprocess import stemwords, removeStopwords, removeSGML, tokenizeText
 
@@ -49,7 +52,6 @@ def main(args):
             else:
                 uniqWords[tok] += 1
 
-
         finalList = []
 
         # list of Sentences
@@ -66,6 +68,12 @@ def main(args):
 
         for top in sortedList:
             print(top.sentence)
+
+
+@app.route('/', methods=['GET', 'POST'])
+def mainRoute():
+    '''Main route for now'''
+    return flask.render_template('summary.html')
 
 
 if __name__ == '__main__':
