@@ -31,7 +31,7 @@ CONTR = {
     'he\'s' : 'he is',
     'she\'s' : 'she is',
     'it\'s' : 'it is',
-    'there\'s' : 'there is' 
+    'there\'s' : 'there is'
 }
 
 # List of stop words
@@ -85,7 +85,7 @@ def check_period(word):
     for char in word:
         if char == '.':
             cCount +=1
-    
+
     if cCount == 0:
         return
 
@@ -121,7 +121,7 @@ def run_Tests(word):
         # has hyphen don't tokenize
         RETURN_LIST.append(word)
         return RETURN_LIST
-    
+
     check_posessive(word)
     check_contractions(word)
     check_period(word)
@@ -149,7 +149,7 @@ def tokenizeText(text):
     token_list = filter(None, token_list)
 
     #removes certain PUNCTUATION
-    new_list = []    
+    new_list = []
     for it in token_list:
         new_list.append(''.join(ch for ch in it if ch not in PUNCTUATION))
 
@@ -203,7 +203,7 @@ def compute(files):
 
             # stemmer
             complete = stemwords(no_stop)
-            
+
             # print("Endlist: ", complete)
             # append to end_list
             end_list += complete
@@ -216,8 +216,8 @@ def compute(files):
             uniq_words[i] = 1
         else:
             uniq_words[i] += 1
-        
-    # num uniq 
+
+    # num uniq
     num_uniq = len(uniq_words.keys())
 
     return tot_words, num_uniq, uniq_words
@@ -252,7 +252,7 @@ if __name__ == '__main__':
             n_min += 1
             break
 
-    print ("The minimum unique words accounting for {} of total number of words is {}".format (proportion,n_min))    
+    print ("The minimum unique words accounting for {} of total number of words is {}".format (proportion,n_min))
 
     # compute betaK from random sample
     # partion files in directory randomly, pick 200 files and 900 files

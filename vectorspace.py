@@ -16,7 +16,7 @@ DOCID = 1
 '''
 Gold standard is a dictionary From:
 query : set(DOCID)
-''' 
+'''
 GOLD_STANDARD = {}
 
 # TOP DOCUMENTS DICT
@@ -24,7 +24,7 @@ GOLD_STANDARD = {}
 TOP_LIST = { 10 : [],
              50 : [],
              100: [],
-             500: [] }
+             500: []}
 
 
 def indexDocument(docText, docW, queryW, iIndex):
@@ -44,13 +44,13 @@ def indexDocument(docText, docW, queryW, iIndex):
     '''
     for word in docText:
 
-        # create word to DOCID, tf 
+        # create word to DOCID, tf
         if word not in iIndex[0].keys():
             iIndex[0][word] = {DOCID : 1}
 
         elif DOCID not in iIndex[0][word].keys():
              iIndex[0][word][DOCID] = 1
-        
+
         else:
             iIndex[0][word][DOCID] += 1
 
@@ -60,18 +60,18 @@ def indexDocument(docText, docW, queryW, iIndex):
         else:
              if iIndex[1][word][-1] != DOCID:
                 iIndex[1][word].append(DOCID)
-        
+
         # DOCID to word frequency
         if word not in iIndex[2][DOCID].keys():
             iIndex[2][DOCID][word] = 1
 
         else:
             iIndex[2][DOCID][word] += 1
-    
+
     DOCID += 1
 
 def retrieveDocuments(query, iIndex, docW, queryW):
-    """ 
+    """
         Takes in 4 inputs, calculates simscore
         Output is DOCID : SIMSCORE
 
@@ -81,19 +81,19 @@ def retrieveDocuments(query, iIndex, docW, queryW):
 
     # apply Project 1 tokenizing funcitons
     query = applyPreProccess(query)
-    query_num = query[0] 
+    query_num = query[0]
 
     # remove the line number
     del query[0]
 
-    # set of documents 
+    # set of documents
     common_docs = set()
 
     # dictionary of query idf values
     idf_query = {}
 
     '''
-    Determine the set of documents that that 
+    Determine the set of documents that that
     include at least one token from the query
     Also calculate idf for query term
     '''
@@ -106,7 +106,7 @@ def retrieveDocuments(query, iIndex, docW, queryW):
 
     # make query vector
     query_vec_weighted = []
-    
+
     for word in query:
         # account for different weighting schemes
         if queryW == 'tfidf':
@@ -132,7 +132,7 @@ def retrieveDocuments(query, iIndex, docW, queryW):
                 doc_vector_list[doc].append(0)
 
     # loop through take the dot product of the vectors
-    res_dict = {}   
+    res_dict = {}
     for docid in doc_vector_list.keys():
         dj = doc_vector_list[docid]
         di = query_vec_weighted
@@ -146,7 +146,7 @@ def retrieveDocuments(query, iIndex, docW, queryW):
         if norm_score == 0:
             continue
         else:
-            res_dict[docid] = norm_score    
+            res_dict[docid] = norm_score
 
     return sorted(res_dict.items(), key=operator.itemgetter(1), reverse=True), query_num
 
@@ -242,7 +242,7 @@ def calculateRP(result, query_num):
         TOP_LIST[TOP].append(temp_list)
 
 def printMACRO(totQuerys):
-    """ prints macro average of precision and recall """    
+    """ prints macro average of precision and recall """
     global TOP_LIST
 
     for TOP in sorted(TOP_LIST.keys()):
@@ -257,7 +257,7 @@ def printMACRO(totQuerys):
 def makeGoldStandard():
     """ Make gold standard set from reljudge """
     global GOLD_STANDARD
-    
+
     with open(DIRECTORY + 'cranfield.reljudge') as read_data:
         listOfQuery = filter(None,read_data.read().split('\n'))
         for l_s in listOfQuery:
