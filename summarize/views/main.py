@@ -35,46 +35,78 @@ class Sentence(object):
 
 def main(args):
     '''Input is file that text we want to summarize'''
-    with open(DIRECTORY + '/' + str(args[0]), 'r') as read_data:
+    read_data = args
+    # with open(DIRECTORY + '/' + str(args[0]), 'r') as read_data:
 
-        read_data = read_data.readlines()[0]
+    # read_data = read_data.readlines()[0]
 
-        # make a list of the sentences(currently doesn't take into account Mr.)
-        sentences = re.findall("[A-Z].*?[\.!?]", read_data, re.MULTILINE | re.DOTALL )
+    # make a list of the sentences(currently doesn't take into account Mr.)
+    sentences = re.findall("[A-Z].*?[\.!?]", read_data, re.MULTILINE | re.DOTALL)
 
-        # uniq words dictionary
-        uniqWords = {}
-        tokens = tokenizeText(read_data)
+    # uniq words dictionary
+    uniqWords = {}
+    tokens = tokenizeText(read_data)
 
-        for tok in tokens:
-            if tok not in uniqWords:
-                uniqWords[tok] = 1
-            else:
-                uniqWords[tok] += 1
+    for tok in tokens:
+        if tok not in uniqWords:
+            uniqWords[tok] = 1
+        else:
+            uniqWords[tok] += 1
 
-        finalList = []
+    finalList = []
 
-        # list of Sentences
-        for sentence in sentences:
-            toks = tokenizeText(sentence)
-            score = 0
-            for token in toks:
-                score += uniqWords[token]
+    # list of Sentences
+    for sentence in sentences:
+        toks = tokenizeText(sentence)
+        score = 0
+        for token in toks:
+            score += uniqWords[token]
 
-            finalList.append(Sentence(sentence, toks, score))
+        finalList.append(Sentence(sentence, toks, score))
 
 
-        sortedList = sorted(finalList, key=operator.attrgetter('score'))
+    sortedList = sorted(finalList, key=operator.attrgetter('score'))
 
-        for top in sortedList:
-            print(top.sentence)
+    return sortedList
+    # for top in sortedList:
+    # print(top.sentence)
 
 
 @app.route('/', methods=['GET', 'POST'])
 def mainRoute():
-    '''Main route for now'''
-    return flask.render_template('summary.html')
+    '''Main route for summary'''
 
+    if flask.request.method == 'GET':
+        context = {
+            'type': True
+        }
+        return flask.render_template('summary.html', context=context)
+
+    if flask.request.method == 'POST':
+        context = {
+            'type': False
+        }
+
+        # get the form contents
+        text = flask.request.form['summary']
+
+        return flask.render_template('summary.html', context=context)
+
+    return 'Error'
+@app.route('/submit', methods=['GET', 'POST'])
+def submit():
+
+    if flask.request.method == 'POST':
+        context = {
+            'type': False
+        }
+        # get the form contents
+        text = flask.request.form['summary']
+        print(text)
+
+        context['returnList'] = main(text)
+
+        return flask.render_template('summary.html', context=context)
 
 if __name__ == '__main__':
     '''Run through the command line take in arguments'''
