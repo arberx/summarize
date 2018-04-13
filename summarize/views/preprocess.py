@@ -25,7 +25,7 @@ CONTR = {"she'll": "she will", "don't": "do not", "should've": "should have", "w
 LIST_OF_STOP = ['a', 'all', 'an', 'and', 'any', 'are', 'as', 'at', 'be', 'been', 'but', 'by', 'few', 'from', 'for', 'have', 'he', 'her', 'here', 'him', 'his', 'how', 'i', 'in', 'is', 'it', 'its', 'many', 'me', 'my', 'none', 'of', 'on', 'or', 'our', 'she', 'some', 'the', 'their', 'them', 'there', 'they', 'that', 'this', 'to', 'us', 'was', 'what', 'when', 'where', 'which', 'who', 'why', 'will', 'with', 'you', 'your']
 
 # Many more stopwords. can choose between the two
-with open("stopwords.txt") as stop_words_file:
+with open( os.getcwd() + '/' + "stopwords.txt") as stop_words_file:
     LIST_OF_STOP = stop_words_file.read().split()
 
 # Punctiation to consider to be the end of a sentence
@@ -33,7 +33,7 @@ STOP_PUNCTUATION = ['.']
 
 # Blacklist of words that have periods in them
 BLACK_LIST_WORDS = ["u.s.a.", "u.s.", "col.", "mr.", "mrs.", "ms.", "prof.", "dr.", "gen.", "rep.", "sen.", "st.", "sr.", "jr.", "ph.", "ph.d.", "m.d.", "b.a.", "m.a.", "d.d.", "d.d.s." "b.c.", "a.m.", "p.m.", "a.d.", "b.c.e.", "c.e.", "i.e.", "etc.", "e.g.", "al."]
-    
+
 RETURN_LIST = []
 
 DIRECTORY = ''
@@ -82,7 +82,7 @@ def check_period(word):
     for char in word:
         if char == '.':
             cCount +=1
-    
+
     if cCount == 0:
         return
 
@@ -115,7 +115,7 @@ def run_Tests(word):
         # has hyphen don't tokenize
         RETURN_LIST.append(word)
         return RETURN_LIST
-    
+
     check_posessive(word)
     check_contractions(word)
     check_period(word)
@@ -143,7 +143,7 @@ def tokenizeText(text):
     token_list = filter(None, token_list)
 
     #removes certain PUNCTUATION
-    new_list = []    
+    new_list = []
     for it in token_list:
         new_list.append(''.join(ch for ch in it if ch not in PUNCTUATION))
 
@@ -173,8 +173,8 @@ def stemwords(lis):
     end_list = []
     for word in lis:
         end_list.append(porter_stemmer.stem(word, 0, len(word) - 1))
-    return 
-    
+    return
+
 def split_into_sentences(string):
     """Given a string, split it into sentences."""
 
@@ -190,7 +190,7 @@ def split_into_sentences(string):
     words = string.split()
     for i, word in enumerate(words):
 
-        # Check for quotes to help keep words together        
+        # Check for quotes to help keep words together
         if '"' in word:
             if word.count('"') == 1:
                 if quotes and quotes[-1] == '"':
@@ -215,10 +215,9 @@ def split_into_sentences(string):
         # If the sentence is in the middle of a quoted phrase, keep going
         if quotes:
             continue
-        
+
         # this token is likely to be the end of the sentence.
         sentences.append(" ".join(words[sentence_start:i + 1]))
         sentence_start = i + 1
 
     return sentences
-    
