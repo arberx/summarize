@@ -1,5 +1,7 @@
 
 import preprocess
+import sys
+
 
 class Sentence:
     """Sentence class to help keep track of sentences and their properties"""
@@ -17,6 +19,7 @@ def create_sentences(article):
         sentences.append(Sentence(sen, i))
 
     return sentences
+
 
 def tokenize_sentences(sentences):
     """Tokenizes sentences using Preprocessor"""
@@ -52,6 +55,7 @@ def sum_scores(sentences, article):
         score /= len(sentence.tokens)
         sentence.score = score
 
+
 def rank_sentences(sentences, k):
     """Returns a list of the top k ranked sentences in descending order."""
     sorted_sens = sorted(sentences, key=lambda sen: sen.score, reverse=True)[:k]
@@ -62,9 +66,9 @@ def rank_sentences(sentences, k):
 
 if __name__ == '__main__':
 
-    # article = ""
-    # with open("paulryan.txt") as f:
-    #     article = f.read()
+    article = ""
+    with open(str(sys.argv[1:][0])) as f:
+        article = f.read()
 
     sentences = create_sentences(article)
     tokenize_sentences(sentences)

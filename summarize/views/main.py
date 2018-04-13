@@ -15,6 +15,7 @@ from sumMary import create_sentences, tokenize_sentences, sum_scores, rank_sente
 from porterstemmer import PorterStemmer
 from preprocess import stemwords, removeStopwords, removeSGML, tokenizeText
 
+
 def main(article):
     '''Input is file that text we want to summarize'''
 
@@ -45,18 +46,19 @@ def mainRoute():
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
 
+    context = {
+        'type': False
+    }
+
     if flask.request.method == 'POST':
-        context = {
-            'type': False
-        }
+
         # get the form contents
         text = flask.request.form['summary']
-        # print(text)
 
         context['returnList'] = main(text)
 
-        return flask.render_template('summary.html', context=context)
+    return flask.render_template('summary.html', context=context)
+
 
 if __name__ == '__main__':
     '''Run through the command line take in arguments'''
-    main(sys.argv[1:])
