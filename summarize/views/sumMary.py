@@ -23,18 +23,25 @@ def tokenize_sentences(sentences):
     for sen in sentences:
         sen.tokens = preprocess.tokenizeText(sen.original)
 
-def sum_scores(sentences, article):
-    """Calculates the scores for all sentences"""
+def create_occurences_dict(string):
+    """Given a string, count occurences of preprocessed tokens."""
 
-    # Records occurences of tokens in text
+    # Keeps track of preprocessed tokens count
     occurrences = {}
-    tokens = preprocess.tokenizeText(article)
+    tokens = preprocess.tokenizeText(string)
 
-    # Calculate occurences of tokens in text
+    # Count occurences of tokens in string
     for token in tokens:
         if token not in occurrences:
             occurrences[token] = 0
-        occurrences[token] += 1
+    occurrences[token] += 1
+
+    return occurrences
+
+def sum_scores(sentences, article):
+    """Calculates the scores for all sentences"""
+
+    occurrences = create_occurences_dict(article)
 
     for sentence in sentences:
         score = 0.0
@@ -51,6 +58,7 @@ def rank_sentences(sentences, k):
 
     # Sort by order of appearence in document
     return sorted(sorted_sens, key=lambda sen: sen.order)
+
 
 if __name__ == '__main__':
 
