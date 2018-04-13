@@ -7,9 +7,10 @@ Final Project for EECS486 at the University of Michigan - Ann Arbor
 
 The project has a web interface that goes along with it, to run it please **clone** the repo and cd into the **summarize** directory:
 
-1) Activate a python2 virtual enviroment by (optional):
+1) Create and activate a python2 virtual enviroment by (optional):
 
 `virtualenv env --no-site-packages -p python`
+`source env/bin/activate`
 
 2) Install the summarize package:
 
