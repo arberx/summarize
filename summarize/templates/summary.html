@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+  {% block content %}
+        <center>
+          <br>
+          <h1>sumMarize</h1>
+
+          {% if context.type %}
+
+            <form method="POST" action="{{url_for('submit', _external=True)}}" id='sumform'>
+              <!-- if gest request show the form with text box -->
+              <div class="form-group col-lg-5">
+                <label for="comment">Please enter text you want to summarize: </label>
+                <textarea class="form-control" name="summary" placeholder="Enter text here..." rows="7"></textarea>
+              </div>
+              <input type="submit" name='Submit Response' class="btn btn-primary"></input>
+            </form>
+
+          {% endif %}
+
+          {% if not context.type %}
+            <!-- else show summary results -->
+            {% for result in context.returnList %}
+            <p>{{result.sentence}}</p>
+            {% endfor %}
+          {% endif %}
+
+        </center>
+  {% endblock %}
