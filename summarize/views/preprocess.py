@@ -13,30 +13,27 @@ import operator
 import math
 from random import randint
 from porterstemmer import PorterStemmer
+from collections import deque
 
 # punctuation that we want removed
 PUNCTUATION = r"""!"#$%&()*+/:;<=>?@[\]^_`{|}~"""
 
-'''
-Some of the most common English contractions taken from https://www.thoughtco.com/contractions-commonly-used-informal-english-1692651
-'''
-CONTR = {
-    'I\'m' : 'I am',
-    'don\'t' : 'do not',
-    'didn\'t' : 'did not',
-    'we\'ll' : 'we all',
-    'can\'t' : 'cannot',
-    'I\'ve' : 'I have',
-    'hadn\'t' : 'had not',
-    'he\'s' : 'he is',
-    'she\'s' : 'she is',
-    'it\'s' : 'it is',
-    'there\'s' : 'there is'
-}
+# https://en.wikipedia.org/wiki/Wikipedia:List_of_English_contractions
+CONTR = {"she'll": "she will", "don't": "do not", "should've": "should have", "won't": "will not", "that'll": "that will", "daren't": "dare not", "he's": "he is", "when's": "when is", "we've": "we have", "he'd": "he would", "ma'am": "madam", "daresn't": "dare not", "haven't": "have not", "cain't": "cannot", "'tis": "it is", "who's": "who is", "gonna": "going to", "they'd": "they would", "oughtn't": "ought not", "I'd": "I would", "you've": "youhave", "I'm": "I am", "these're": "these are", "who'd": "who would", "those're": "those are", "we'll": "we will", "mayn't": "may not", "they've": "they have", "somebody's": "somebody is", "could've": "could have", "what've": "what have", "who'd've": "who would have", "mustn't": "must not", "isn't": "is not", "it'll": "it will", "y'all": "you all", "why's": "why is", "you'd": "you would", "we'd": "we would", "why'd": "why did", "this's": "this is", "shan't": "shall not", "there'd": "there would", "ne'er": "never", "needn't": "need not", "o'clock": "of the clock", "why're": "why are", "there's": "there is", "shouldn't": "should not", "they'll": "they will", "mightn't": "might not", "ol'": "old", "who're": "who are", "may've": "may have", "what'll": "what will", "hadn't": "had not", "aren't": "are not", "something's": "something is", "wouldn't": "would not", "amn't": "am not", "weren't": "were not", "would've": "would have", "someone's": "someone is", "we'd've": "we would have", "can't": "cannot", "dasn't": "dare not", "which's": "which is", "couldn't": "could not", "how'll": "how will", "I'm'a": "I am going to", "doesn't": "does not", "how's": "how is", "I've": "I have", "it's": "it is", "how'd": "how did", "there're": "there are", "we're": "we are", "it'd": "it would", "what're": "what are", "what's": "what is", "ain't": "is not", "who'll": "who will", "what'd": "what did", "must've": "must have", "I'll": "I will", "they're": "they are", "o'er": "over", "wasn't": "was not", "gotta": "got to", "hasn't": "has not", "where're": "where are", "e'er": "ever", "that're": "that are", "didn't": "did not", "where've": "where have", "let's": "let us", "'twas": "it was", "you're": "you are", "who've": "who have", "where'd": "where did", "where's": "where is", "might've": "might have", "he'll": "he will", "that'd": "that would", "she'd": "she would", "you'll": "you will", "she's": "she is", "that's": "that is"}
 
 # List of stop words
 LIST_OF_STOP = ['a', 'all', 'an', 'and', 'any', 'are', 'as', 'at', 'be', 'been', 'but', 'by', 'few', 'from', 'for', 'have', 'he', 'her', 'here', 'him', 'his', 'how', 'i', 'in', 'is', 'it', 'its', 'many', 'me', 'my', 'none', 'of', 'on', 'or', 'our', 'she', 'some', 'the', 'their', 'them', 'there', 'they', 'that', 'this', 'to', 'us', 'was', 'what', 'when', 'where', 'which', 'who', 'why', 'will', 'with', 'you', 'your']
 
+# Many more stopwords. can choose between the two
+with open("stopwords.txt") as stop_words_file:
+    LIST_OF_STOP = stop_words_file.read().split()
+
+# Punctiation to consider to be the end of a sentence
+STOP_PUNCTUATION = ['.']
+
+# Blacklist of words that have periods in them
+BLACK_LIST_WORDS = ["u.s.a.", "u.s.", "col.", "mr.", "mrs.", "ms.", "prof.", "dr.", "gen.", "rep.", "sen.", "st.", "sr.", "jr.", "ph.", "ph.d.", "m.d.", "b.a.", "m.a.", "d.d.", "d.d.s." "b.c.", "a.m.", "p.m.", "a.d.", "b.c.e.", "c.e.", "i.e.", "etc.", "e.g.", "al."]
+    
 RETURN_LIST = []
 
 DIRECTORY = ''
@@ -85,7 +82,7 @@ def check_period(word):
     for char in word:
         if char == '.':
             cCount +=1
-
+    
     if cCount == 0:
         return
 
@@ -107,21 +104,18 @@ def run_Tests(word):
 
     if check_if_num(word):
         # don't tokenize numbers
-        # print("isNum: {}".format(word))
         RETURN_LIST.append(word)
         return RETURN_LIST
 
     if check_if_date(word):
-        # print("isDate: {}".format(word))
         RETURN_LIST.append(word)
         return RETURN_LIST
 
     if check_if_hyphen(word):
-        # print("ishyphen: {}".format(word))
         # has hyphen don't tokenize
         RETURN_LIST.append(word)
         return RETURN_LIST
-
+    
     check_posessive(word)
     check_contractions(word)
     check_period(word)
@@ -149,7 +143,7 @@ def tokenizeText(text):
     token_list = filter(None, token_list)
 
     #removes certain PUNCTUATION
-    new_list = []
+    new_list = []    
     for it in token_list:
         new_list.append(''.join(ch for ch in it if ch not in PUNCTUATION))
 
@@ -160,13 +154,12 @@ def tokenizeText(text):
     for word in token_list:
         lis = run_Tests(word)
         for item in lis:
-            new_list.append(item)
+            new_list.extend(item)
 
     # finally remove stray "" from list
     while '' in new_list:
         new_list.remove('')
 
-    # print(new_list)
     return new_list
 
 def removeStopwords(lis):
@@ -180,102 +173,52 @@ def stemwords(lis):
     end_list = []
     for word in lis:
         end_list.append(porter_stemmer.stem(word, 0, len(word) - 1))
-    return end_list
+    return 
+    
+def split_into_sentences(string):
+    """Given a string, split it into sentences."""
 
-def compute(files):
-    '''returns total_num, and unique'''
+    # output, a list of strings representing sentences
+    sentences = []
 
-    end_list = []
-    tot_words = 0
-    uniq_words = {}
-    num_uniq = 0
+    # keeps track of the start of the current sentence
+    sentence_start = 0
 
-    for filename in files:
-        with open(DIRECTORY + '/' + filename, 'r') as read_data:
-            # pass the entire contents of the file, and write
-            no_SGML = removeSGML(read_data.read())
+    # keeps track of quotes in a sentence to help keep them together
+    quotes = deque()
 
-            # pass to tokenizeText
-            token_text = tokenizeText(no_SGML)
+    words = string.split()
+    for i, word in enumerate(words):
 
-            # pass to remove stopwords
-            no_stop = removeStopwords(token_text)
+        # Check for quotes to help keep words together        
+        if '"' in word:
+            if word.count('"') == 1:
+                if quotes and quotes[-1] == '"':
+                    quotes.pop()
+                else:
+                    quotes.append('"')
 
-            # stemmer
-            complete = stemwords(no_stop)
+        # If none of the stop puncation characters are found at the end of the word, go to next word
+        # In case you want sentences to end after words like end." (with the quotes in there as well)
+        """or (len(word) > 1 and char == word[-2] and '"' == word[-1])"""
+        if not any(char == word[-1]  for char in STOP_PUNCTUATION):
+            continue
 
-            # print("Endlist: ", complete)
-            # append to end_list
-            end_list += complete
+        # Check if word is in blacklist
+        if word.lower() in BLACK_LIST_WORDS:
+            continue
 
-    tot_words = len(end_list)
+        # Check if next token starts with a capital
+        if i != len(words) - 1 and words[i + 1][0].islower():
+            continue
 
-    # unique words
-    for i in end_list:
-        if i not in uniq_words.keys():
-            uniq_words[i] = 1
-        else:
-            uniq_words[i] += 1
+        # If the sentence is in the middle of a quoted phrase, keep going
+        if quotes:
+            continue
+        
+        # this token is likely to be the end of the sentence.
+        sentences.append(" ".join(words[sentence_start:i + 1]))
+        sentence_start = i + 1
 
-    # num uniq
-    num_uniq = len(uniq_words.keys())
-
-    return tot_words, num_uniq, uniq_words
-
-if __name__ == '__main__':
-
-    # assign directory
-    DIRECTORY = os.getcwd() + str(sys.argv[1])
-
-    # get total, and uniq values
-    tot_words, num_uniq, uniq_words = compute(os.listdir(DIRECTORY))
-
-    print("Words {}".format(tot_words))
-    print("Vocabulary {}".format(num_uniq))
-
-    # # sort dict in acsending order
-    sorted_dict = sorted(uniq_words.items(), key=operator.itemgetter(1), reverse=True)
-
-    # print top 50:
-    print("Top 50 words")
-    for i in range(0,50):
-        print(sorted_dict[i])
-
-    # proportion accounting for 25%
-    proportion = 0.25
-    maxi = proportion * tot_words
-
-    curr_tot = 0
-    for n_min, key in enumerate(sorted_dict):
-        curr_tot += key[1]
-        if curr_tot > maxi:
-            n_min += 1
-            break
-
-    print ("The minimum unique words accounting for {} of total number of words is {}".format (proportion,n_min))
-
-    # compute betaK from random sample
-    # partion files in directory randomly, pick 200 files and 900 files
-    l1 = []
-    l2 = []
-
-    while (len(l1) != 200 and len(l2) != 900):
-        i = randint(0,1399)
-        j = randint(0,1399)
-        l1.append(os.listdir(DIRECTORY)[i])
-        l2.append(os.listdir(DIRECTORY)[j])
-
-    # calculate values
-    n1, v1, uniq_words = compute(l1)
-    n2, v2, uniq_words = compute(l2)
-
-    # n is total words, v is vocab
-    beta = (math.log(v1) - math.log(v2)) / float(math.log(n1) - math.log(n2))
-    k = float(v1) / n1**beta
-
-    print "K value is:    {}".format(k)
-    print "beta value is: {}".format(beta)
-
-    # use these values to compute Vocab size if corpus was increased
-    for i in [1000000, 1000000000]:
-        print "Predicted vocab size for {} is {}".format(i, k*i**beta)
+    return sentences
+    

@@ -11,59 +11,22 @@ import pprint
 import operator
 import flask
 from summarize import app
+from sumMary import create_sentences, tokenize_sentences, sum_scores, rank_sentences
 from porterstemmer import PorterStemmer
 from preprocess import stemwords, removeStopwords, removeSGML, tokenizeText
 
-DIRECTORY = os.getcwd()
-
-
-class Sentence(object):
-    '''
-    Class contains:
-        original sentence (string)
-        preprocessed list of tokens
-        sentence score (float)
-    '''
-    def __init__(self, sentence, tokens, score):
-        '''initalize members'''
-        self.sentence = sentence
-        self.tokens = tokens
-        self.score = score
-
-
-def main(args):
+def main(article):
     '''Input is file that text we want to summarize'''
 
-    read_data = args
+    sentences = create_sentences(article)
 
-    # make a list of the sentences(currently doesn't take into account Mr.)
-    sentences = re.findall(r"[A-Z].*?[\.!?]",
-                           read_data, re.MULTILINE | re.DOTALL)
+    tokenize_sentences(sentences)
 
-    # uniq words dictionary
-    uniqWords = {}
-    tokens = tokenizeText(read_data)
+    sum_scores(sentences, article)
 
-    for tok in tokens:
-        if tok not in uniqWords:
-            uniqWords[tok] = 1
-        else:
-            uniqWords[tok] += 1
+    sorted_sentences = rank_sentences(sentences, 10)
 
-    finalList = []
-
-    # list of Sentences
-    for sentence in sentences:
-        toks = tokenizeText(sentence)
-        score = 0
-        for token in toks:
-            score += uniqWords[token]
-
-        finalList.append(Sentence(sentence, toks, score))
-
-    sortedList = sorted(finalList, key=operator.attrgetter('score'))
-
-    return sortedList
+    return sorted_sentences
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -88,7 +51,7 @@ def submit():
         }
         # get the form contents
         text = flask.request.form['summary']
-        print(text)
+        # print(text)
 
         context['returnList'] = main(text)
 
