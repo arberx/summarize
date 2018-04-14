@@ -37,7 +37,10 @@ def score_tf_sentences(sentences, article):
             score += occurrences[token]
 
         # Normalize score with the length of the sentences
-        score /= len(sentence.tokens)
+        # print(sentence.original)
+        if len(sentence.tokens) != 0:
+            score /= len(sentence.tokens)
+
         sentence.score = score
 
 
