@@ -2,6 +2,7 @@ import preprocess
 import sys
 from helpers import create_occurrences_dict
 from centroid import centroid_scoring
+from probability import probability_scoring
 
 class Sentence:
     """Sentence class to help keep track of sentences and their properties"""
@@ -59,8 +60,9 @@ if __name__ == '__main__':
     tokenize_sentences(sentences)
 
     # Main algorithm to score
-    score_tf_sentences(sentences, article)
+    #score_tf_sentences(sentences, article)
     #centroid_scoring(article, sentences)
+    #probability_scoring(sentences)
 
     sorted_sentences = rank_sentences(sentences, 3)
 
