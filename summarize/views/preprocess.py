@@ -378,49 +378,54 @@ def preprocess_text(string):
     return stemWords(tokens)
 
 def split_into_sentences(string):
-    """Given a string, split it into sentences."""
+	"""Given a string, split it into sentences."""
 
-    # output, a list of strings representing sentences
-    sentences = []
+	# output, a list of strings representing sentences
+	sentences = []
 
-    # keeps track of the start of the current sentence
-    sentence_start = 0
+	# keeps track of the start of the current sentence
+	sentence_start = 0
 
-    # keeps track of quotes in a sentence to help keep them together
-    quotes = deque()
+	# keeps track of quotes in a sentence to help keep them together
+	quotes = deque()
 
-    words = string.split()
-    for i, word in enumerate(words):
+	words = string.split()
+	for i, word in enumerate(words):
 
-        # Check for quotes to help keep words together
-        if '"' in word:
-            if word.count('"') == 1:
-                if quotes and quotes[-1] == '"':
-                    quotes.pop()
-                else:
-                    quotes.append('"')
+		# Check for quotes to help keep words together
+		if '"' in word:
+			if word.count('"') == 1:
+				if quotes and quotes[-1] == '"':
+					quotes.pop()
+				else:
+					quotes.append('"')
 
-        # If none of the stop puncation characters are found at the end of the word, go to next word
-        # In case you want sentences to end after words like end." (with the quotes in there as well)
-        """or (len(word) > 1 and char == word[-2] and '"' == word[-1])"""
-        if not any(char == word[-1]  for char in STOP_PUNCTUATION):
-            continue
+		# last word, add it
+		if i == len(words) - 1:
+			sentences.append(" ".join(words[sentence_start:i + 1]))
+			continue
 
-        # Check if word is in blacklist
-        if word.lower() in BLACK_LIST_WORDS:
-            continue
+		# If none of the stop puncation characters are found at the end of the word, go to next word
+		# In case you want sentences to end after words like end." (with the quotes in there as well)
+		"""or (len(word) > 1 and char == word[-2] and '"' == word[-1])"""
+		if not any(char == word[-1]  for char in STOP_PUNCTUATION):
+			continue
 
-        # Check if next token starts with a capital
-        if i != len(words) - 1 and words[i + 1][0].islower():
-            continue
+		# Check if word is in blacklist
+		if word.lower() in BLACK_LIST_WORDS:
+			continue
 
-        # If the sentence is in the middle of a quoted phrase, keep going
-        if quotes:
-            continue
+		# Check if next token starts with a capital
+		if i != len(words) - 1 and words[i + 1][0].islower():
+			continue
 
-        # this token is likely to be the end of the sentence.
-        sentences.append(" ".join(words[sentence_start:i + 1]))
-        sentence_start = i + 1
+		# If the sentence is in the middle of a quoted phrase, keep going
+		if quotes:
+			continue
 
-    return sentences
+		# this token is likely to be the end of the sentence.
+		sentences.append(" ".join(words[sentence_start:i + 1]))
+		sentence_start = i + 1
+		
+	return sentences
 
