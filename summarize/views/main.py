@@ -11,7 +11,7 @@ import pprint
 import operator
 import flask
 from summarize import app
-from sumMary import create_sentences, tokenize_sentences, sum_scores, rank_sentences
+from sumMary import create_sentences, tokenize_sentences, score_tf_sentences, rank_sentences
 from porterstemmer import PorterStemmer
 from preprocess import stemwords, removeStopwords, removeSGML, tokenizeText
 

@@ -1,7 +1,7 @@
-
 import preprocess
 import sys
-
+from helpers import create_occurrences_dict
+from centroid import centroid_scoring
 
 class Sentence:
     """Sentence class to help keep track of sentences and their properties"""
@@ -20,31 +20,16 @@ def create_sentences(article):
 
     return sentences
 
-
 def tokenize_sentences(sentences):
     """Tokenizes sentences using Preprocessor"""
     for sen in sentences:
         sen.tokens = preprocess.tokenizeText(sen.original)
 
-def create_occurences_dict(string):
-    """Given a string, count occurences of preprocessed tokens."""
 
-    # Keeps track of preprocessed tokens count
-    occurrences = {}
-    tokens = preprocess.tokenizeText(string)
-
-    # Count occurences of tokens in string
-    for token in tokens:
-        if token not in occurrences:
-            occurrences[token] = 0
-    occurrences[token] += 1
-
-    return occurrences
-
-def sum_scores(sentences, article):
+def score_tf_sentences(sentences, article):
     """Calculates the scores for all sentences"""
 
-    occurrences = create_occurences_dict(article)
+    occurrences = create_occurrences_dict(article)
 
     for sentence in sentences:
         score = 0.0
@@ -72,7 +57,11 @@ if __name__ == '__main__':
 
     sentences = create_sentences(article)
     tokenize_sentences(sentences)
-    sum_scores(sentences, article)
+
+    # Main algorithm to score
+    score_tf_sentences(sentences, article)
+    #centroid_scoring(article, sentences)
+
     sorted_sentences = rank_sentences(sentences, 3)
 
     for sen in sorted_sentences:
