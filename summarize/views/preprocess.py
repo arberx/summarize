@@ -1,25 +1,116 @@
-#!/usr/bin/python
-
-'''
-Assignment 1 For EECS 486
-Author: Arber Xhindoli
-'''
+# preprocess.py
 
 import sys
 import re
 import os
-import datetime
-import operator
-import math
-from random import randint
 from porterstemmer import PorterStemmer
 from collections import deque
 
-# punctuation that we want removed
-PUNCTUATION = r"""!"#$%&()*+/:;<=>?@[\]^_`{|}~"""
-
-# https://en.wikipedia.org/wiki/Wikipedia:List_of_English_contractions
-CONTR = {"she'll": "she will", "don't": "do not", "should've": "should have", "won't": "will not", "that'll": "that will", "daren't": "dare not", "he's": "he is", "when's": "when is", "we've": "we have", "he'd": "he would", "ma'am": "madam", "daresn't": "dare not", "haven't": "have not", "cain't": "cannot", "'tis": "it is", "who's": "who is", "gonna": "going to", "they'd": "they would", "oughtn't": "ought not", "I'd": "I would", "you've": "youhave", "I'm": "I am", "these're": "these are", "who'd": "who would", "those're": "those are", "we'll": "we will", "mayn't": "may not", "they've": "they have", "somebody's": "somebody is", "could've": "could have", "what've": "what have", "who'd've": "who would have", "mustn't": "must not", "isn't": "is not", "it'll": "it will", "y'all": "you all", "why's": "why is", "you'd": "you would", "we'd": "we would", "why'd": "why did", "this's": "this is", "shan't": "shall not", "there'd": "there would", "ne'er": "never", "needn't": "need not", "o'clock": "of the clock", "why're": "why are", "there's": "there is", "shouldn't": "should not", "they'll": "they will", "mightn't": "might not", "ol'": "old", "who're": "who are", "may've": "may have", "what'll": "what will", "hadn't": "had not", "aren't": "are not", "something's": "something is", "wouldn't": "would not", "amn't": "am not", "weren't": "were not", "would've": "would have", "someone's": "someone is", "we'd've": "we would have", "can't": "cannot", "dasn't": "dare not", "which's": "which is", "couldn't": "could not", "how'll": "how will", "I'm'a": "I am going to", "doesn't": "does not", "how's": "how is", "I've": "I have", "it's": "it is", "how'd": "how did", "there're": "there are", "we're": "we are", "it'd": "it would", "what're": "what are", "what's": "what is", "ain't": "is not", "who'll": "who will", "what'd": "what did", "must've": "must have", "I'll": "I will", "they're": "they are", "o'er": "over", "wasn't": "was not", "gotta": "got to", "hasn't": "has not", "where're": "where are", "e'er": "ever", "that're": "that are", "didn't": "did not", "where've": "where have", "let's": "let us", "'twas": "it was", "you're": "you are", "who've": "who have", "where'd": "where did", "where's": "where is", "might've": "might have", "he'll": "he will", "that'd": "that would", "she'd": "she would", "you'll": "you will", "she's": "she is", "that's": "that is"}
+contractionsDict = {
+	'ain\'t' : ['aint'],
+	'amn\'t' : ['am', 'not'],
+	'aren\'t' : ['are', 'not'],
+	'can\'t' : ['can','not'],
+	'could\'ve' : ['could', 'have'],
+	'couldn\'t' : ['could', 'not'],
+	'daren\'t' : ['dare', 'not'],
+	'daresn\'t' : ['dare', 'not'],
+	'dasen\'t' : ['dare', 'not'],
+	'didn\'t' : ['did', 'not'],
+	'doesn\'t' : ['does', 'not'],
+	'don\'t' : ['do', 'not'],
+	'e\'er' : ['ever'],
+	'hadn\'t' : ['had', 'not'],
+	'hasn\'t' : ['has' 'not'],
+	'haven\'t' : ['have', 'not'],
+	'he\'d' : ['he', 'would'],
+	'he\'ll' : ['he', 'will'],
+	'he\'s' : ['he', 'is'],
+	'how\'d' : ['how', 'did'],
+	'how\'ll' : ['how', 'will'],
+	'how\'s' : ['how', 'is'],
+	'i\'d' : ['i', 'would'],
+	'i\'ll' : ['i', 'will'],
+	'i\'m'  : ['i', 'am'],
+	'i\'m\'a' : ['i', 'am', 'going', 'to'],
+	'i\'ve' : ['i', 'have'],
+	'isn\'t' : ['is', 'not'],
+	'it\'d' : ['it', 'would'],
+	'it\'ll' : ['it', 'will'],
+	'it\'s' : ['it', 'is'],
+	'let\'s' : ['let', 'us'],
+	'ma\'am' : ['madam'],
+	'mayn\'t' : ['may', 'not'],
+	'may\'ve' : ['may', 'have'],
+	'mightn\'t' : ['might', 'not'],
+	'might\'ve' : ['might', 'have'],
+	'mustn\'t' : ['must', 'not'],
+	'must\'ve' : ['must', 'have'],
+	'needn\'t' : ['need', 'not'],
+	'ne\'er' : ['never'],
+	'o\'clock' : ['of', 'the', 'clock'],
+	'o\'er' : ['over'],
+	'ol\'' : ['old'],
+	'oughtn\'t' : ['ought', 'not'],
+	'shan\'t' : ['shall', 'not'],
+	'she\'d' : ['she', 'would'],
+	'she\'ll' : ['she', 'will'],
+	'she\'s' : ['she', 'is'],
+	'should\'ve' : ['should', 'have'],
+	'shouldn\'t' : ['should', 'not'],
+	'something\'s' : ['something', 'is'],
+	'that\'ll' : ['that', 'will'],
+	'that\'re' : ['that', 'are'],
+	'that\'s' : ['that', 'has'],
+	'that\'d' : ['that', 'would'],
+	'there\'d' : ['there', 'would'],
+	'there\'re' : ['there', 'are'],
+	'there\'s' : ['there', 'is'],
+	'these\'re' : ['these', 'are'],
+	'they\'d' : ['they', 'would'],
+	'they\'ll' : ['they', 'will'],
+	'they\'re' : ['they', 'are'],
+	'they\'ve' : ['they', 'have'],
+	'this\'s' : ['this', 'is'],
+	'those\'re' : ['those', 'are'],
+	'\'tis' : ['it', 'is'],
+	'\'twas' : ['it', 'was'],
+	'wasn\'t' : ['was', 'not'],
+	'we\'d' : ['we', 'would'],
+	'we\'d\'ve' : ['we', 'would', 'have'],
+	'we\'ll' : ['we', 'will'],
+	'we\'re' : ['we', 'are'],
+	'we\'ve' : ['we', 'have'],
+	'weren\'t' : ['were', 'not'],
+	'what\'d' : ['what', 'would'],
+	'what\'ll' : ['what', 'will'],
+	'what\'re' : ['what', 'are'],
+	'what\'s' : ['what' , 'is'],
+	'what\'ve' : ['what', 'have'],
+	'when\'s' : ['when', 'is'],
+	'where\'d': ['where', 'would'],
+	'where\'re' : ['where', 'are'],
+	'where\'s' : ['where', 'is'],
+	'where\'ve' : ['where', 'have'],
+	'which\'s' : ['which', 'is'],
+	'who\'d' : ['who', 'would'],
+	'who\'d\'ve' : ['who', 'would', 'have'],
+	'who\'ll' : ['who', 'will'],
+	'who\'re' : ['who', 'are'],
+	'who\'s' : ['who', 'is'],
+	'who\'ve' : ['who', 'have'],
+	'why\'d' : ['why', 'would'],
+	'why\'re' : ['why' , 'are'],
+	'why\'s' : ['why', 'is'],
+	'won\'t' : ['will', 'not'],
+	'would\'ve' : ['would', 'have'],
+	'wouldn\'t' : ['would', 'have'],
+	'y\'all' : ['you', 'all'],
+	'you\'d' : ['you', 'would'],
+	'you\'ll' : ['you', 'will'],
+	'you\'re' : ['you', 'are'],
+	'you\'ve' :['you', 'have']
+}
 
 # List of stop words
 LIST_OF_STOP = ['a', 'all', 'an', 'and', 'any', 'are', 'as', 'at', 'be', 'been', 'but', 'by', 'few', 'from', 'for', 'have', 'he', 'her', 'here', 'him', 'his', 'how', 'i', 'in', 'is', 'it', 'its', 'many', 'me', 'my', 'none', 'of', 'on', 'or', 'our', 'she', 'some', 'the', 'their', 'them', 'there', 'they', 'that', 'this', 'to', 'us', 'was', 'what', 'when', 'where', 'which', 'who', 'why', 'will', 'with', 'you', 'your']
@@ -34,146 +125,257 @@ STOP_PUNCTUATION = ['.']
 # Blacklist of words that have periods in them
 BLACK_LIST_WORDS = ["u.s.a.", "u.s.", "col.", "mr.", "mrs.", "ms.", "prof.", "dr.", "gen.", "rep.", "sen.", "st.", "sr.", "jr.", "ph.", "ph.d.", "m.d.", "b.a.", "m.a.", "d.d.", "d.d.s." "b.c.", "a.m.", "p.m.", "a.d.", "b.c.e.", "c.e.", "i.e.", "etc.", "e.g.", "al."]
 
-RETURN_LIST = []
-
-DIRECTORY = ''
-
-def check_if_num(word):
-    '''check if num'''
-    try:
-        float(word)
-        return True
-    except ValueError:
-        return False
-
-def check_if_date(word):
-    '''check date'''
-    if isinstance(word, datetime.date):
-        return True
-    else:
-        return False
-
-def check_if_hyphen(word):
-    '''check hypen only in certain cases'''
-    h_count = 0
-    for let in word:
-        if let == '-':
-            h_count += 1
-
-    # more detail
-    if h_count == 1 or h_count == 2 and \
-       word[0] != '-' and word[len(word)-1] != '-':
-        return True
-    return False
-
-def check_posessive(word):
-    '''check if possessive'''
-    if word.endswith('\'s'):
-        RETURN_LIST.append(word.split('\'')[0])
-
-def check_contractions(word):
-    '''checks if word has a contraction, if so, returns list of word'''
-    if word in CONTR.keys():
-        RETURN_LIST.append(CONTR[word].split(' '))
-
-def check_period(word):
-    '''checks if it has more than one period, if not, should be removed'''
-    cCount = 0
-    for char in word:
-        if char == '.':
-            cCount +=1
-
-    if cCount == 0:
-        return
-
-    elif cCount == 1:
-        RETURN_LIST.append(word.split('.')[0])
-
-    else:
-        if word[0] == '.' and word[len(word)-1] != '.':
-            RETURN_LIST.append(word.split('.')[1])
-        elif word[len(word)-1] == '.':
-            RETURN_LIST.append(word.split('.')[0])
-        else:
-            return
-
-def run_Tests(word):
-
-    # clear list every run
-    del RETURN_LIST[:]
-
-    if check_if_num(word):
-        # don't tokenize numbers
-        RETURN_LIST.append(word)
-        return RETURN_LIST
-
-    if check_if_date(word):
-        RETURN_LIST.append(word)
-        return RETURN_LIST
-
-    if check_if_hyphen(word):
-        # has hyphen don't tokenize
-        RETURN_LIST.append(word)
-        return RETURN_LIST
-
-    check_posessive(word)
-    check_contractions(word)
-    check_period(word)
-
-    if RETURN_LIST:
-        return RETURN_LIST
-    else:
-        # final check to remove uneccessary punctuation
-        RETURN_LIST.append(''.join(ch for ch in word if ch not in PUNCTUATION))
-        return RETURN_LIST
-
-
 def removeSGML(text):
-    '''Function removes SGML tags, replaces them with empty spaces'''
-    return re.sub(re.compile('<.*?>'), '', text)
+	tagRemover = re.compile('<.*?>')
+	noTags = re.sub(tagRemover, '', text)
+	return noTags
 
 def tokenizeText(text):
-    '''Function tokenizes the text, returns list of these tokens'''
-    # makes lower case, start tokenizing
-    text = text.lower()
-    no_new_line = text.replace('\n', ' ')
-    token_list = no_new_line.split(' ')
+	# First, split on ' ' to remove spaces
+	initial = text.split(' ')
 
-    # remove emptyspaces
-    token_list = filter(None, token_list)
+	# Next, split on \n and remove empty strings
+	noReturnsOrEmpty = []
+	for word in initial:
+		noReturns = word.split('\n')
+		for token in noReturns:
+			if token != '':
+				noReturnsOrEmpty.append(token)
 
-    #removes certain PUNCTUATION
-    new_list = []
-    for it in token_list:
-        new_list.append(''.join(ch for ch in it if ch not in PUNCTUATION))
+	# Make all words lowercase
+	lowercase = []
+	for word in noReturnsOrEmpty:
+		word = word.lower()
+		lowercase.append(word)
 
-    token_list = new_list
+	# Deal with commas
+	commasTokenized = []
+	for word in lowercase:
+		if ',' not in word:
+			commasTokenized.append(word)
+			continue
 
-    # begin the process of tokenizing, by specifics specified in spec
-    new_list = []
-    for word in token_list:
-        lis = run_Tests(word)
-        for item in lis:
-            new_list.extend(item)
+		if word == ',':
+			continue
 
-    # finally remove stray "" from list
-    while '' in new_list:
-        new_list.remove('')
+		# Remove commas at ends of words
+		if word[-1] == ',':
+			word = word[0:-1]
 
-    return new_list
+		# Check if the word is a valid number
+		# Commas and periods are okay, but must contain at least one digit
+		validNumber = True
+		oneNumber = False
+		for idx in word:
+			if not (idx.isdigit() or idx == ',' or idx == '.'):
+				validNumber = False
+			if idx.isdigit():
+				oneNumber = True
 
-def removeStopwords(lis):
-    '''removes stopwords'''
-    # remove stop words list
-    return [x for x in lis if x not in LIST_OF_STOP]
+		# Valid numbers are kept together but the commas are removed
+		if validNumber and oneNumber:
+			word = re.sub(',', '', word)
+			commasTokenized.append(word)
+			continue
 
-def stemwords(lis):
-    '''word stemmer'''
-    porter_stemmer = PorterStemmer()
-    end_list = []
-    for word in lis:
-        end_list.append(porter_stemmer.stem(word, 0, len(word) - 1))
-    return
+		else:
+			commaSplit = word.split(',')
+
+			for chunk in commaSplit:
+				if chunk != '':
+					commasTokenized.append(chunk)
+			continue
+
+	# Deal with hyphens
+	hyphensTokenized = []
+	for word in commasTokenized:
+		if '-' not in word:
+			hyphensTokenized.append(word)
+			continue
+
+		word = re.sub('-', '', word)
+
+		if word == '':
+			continue
+
+		hyphensTokenized.append(word)
+
+	# Deal with periods
+	periodsTokenized = []
+	for word in hyphensTokenized:
+		if '.' not in word:
+			periodsTokenized.append(word)
+			continue
+
+		if word[-1] == '.':
+			word = word[0:-1]
+
+
+		if word == '.' or word == '':
+			continue
+
+		# Check for numbers
+		validNumber = True
+		oneNumber = False
+		for idx in word:
+			if not (idx.isdigit() or idx == '.'):
+				validNumber = False
+			if idx.isdigit():
+				oneNumber = True
+
+		if validNumber and oneNumber:
+			periodsTokenized.append(word)
+			continue
+
+		# Check for abbreviations
+		numEmpty = 0
+		numOne = 0
+		periodSplit = word.split('.')
+		for chunk in periodSplit:
+			if len(chunk) == 0:
+				numEmpty += 1
+			if len(chunk) == 1:
+				numOne += 1
+
+		if numEmpty <= 1 and numOne >= 2:
+			word = re.sub('.', '', word)
+			periodsTokenized.append(word)
+			continue
+
+		for chunk in periodSplit:
+			if chunk != '':
+				periodsTokenized.append(chunk)
+
+
+	# Deal with apostrophes (single quotes: ')
+	apostrophesTokenized = []
+	for word in periodsTokenized:
+		if '\'' not in word:
+			apostrophesTokenized.append(word)
+			continue
+
+		if word in contractionsDict:
+			separate = contractionsDict[word]
+			for chunk in separate:
+				apostrophesTokenized.append(chunk)
+			continue
+
+		if len(word) < 4:
+			word = re.sub('\'', '', word)
+			apostrophesTokenized.append(word)
+			continue
+
+		if word[-2:] == '\'s':
+			word = word[0:-2]
+			apostrophesTokenized.append(word)
+			apostrophesTokenized.append('s')
+			continue
+
+		if word[-3:] == '\'ll':
+			word = word[0:-3]
+			apostrophesTokenized.append(word)
+			apostrophesTokenized.append('will')
+			continue
+
+		if word[-2:] == '\'d':
+			word = word[0:-2]
+			apostrophesTokenized.append(word)
+			apostrophesTokenized.append('would')
+			continue
+
+		if word[-3:] == '\'re':
+			word = word[0:-3]
+			apostrophesTokenized.append(word)
+			apostrophesTokenized.append('are')
+			continue
+
+		if word[-3:] == '\'ve':
+			word = word[0:-3]
+			apostrophesTokenized.append(word)
+			apostrophesTokenized.append('have')
+			continue
+
+		word = re.sub('\'', '', word)
+		apostrophesTokenized.append(word)
+
+	slashesTokenized = []
+	for word in apostrophesTokenized:
+		if '/' not in word:
+			slashesTokenized.append(word)
+			continue
+
+		if word[-1] == '/':
+			word = word[0:-1]
+
+		if word == '':
+			continue
+
+		numSlashes = 0
+		wasSlash = False
+		valid = True
+		for idx in word:
+			if not(idx.isdigit() or idx == '/'):
+				valid = False
+			if idx == '/':
+				if (wasSlash):
+					valid = False
+				numSlashes += 1
+				wasSlash = True
+			else:
+				wasSlash = False
+
+		if numSlashes > 2:
+			valid = False
+
+		if valid:
+			slashesTokenized.append(word)
+			continue
+
+		word = re.sub('/', '', word)
+		slashesTokenized.append(word)
+
+	final = []
+	for word in slashesTokenized:
+		word = re.sub('[\?!\\\\\(\)\[\]\{\}]', '', word)
+		if word != '':
+			final.append(word)
+
+	final_final = []
+	for word in final:
+		final_final.append(''.join(ch for ch in word if ch.isalnum()))
+
+	final_final_final = []
+	for word in final_final:
+		if word != '':
+			final_final_final.append(word)
+
+	return final_final_final
+
+def removeStopwords(tokens):
+    """Removes stopwords in tokens."""
+    stopwordsRemoved = []
+
+	# Remove all tokens that are stopwords
+    for token in tokens:
+	    if token not in LIST_OF_STOP:
+		    stopwordsRemoved.append(token)
+
+    return stopwordsRemoved
+
+def stemWords(tokens):
+    """Stems tokens."""
+    stemmer = PorterStemmer()
+    stemmedWords = []
+    for token in tokens:
+        stemmed = stemmer.stem(token, 0, len(token)-1)
+        stemmedWords.append(stemmed)
+    return stemmedWords
+
+def preprocess_text(string):
+    """Preprocess text, including tokenizing, stopword removal, and stemming."""
+    tokens = tokenizeText(string)
+    tokens = removeStopwords(tokens)
+    return stemWords(tokens)
 
 def split_into_sentences(string):
     """Given a string, split it into sentences."""
@@ -221,3 +423,4 @@ def split_into_sentences(string):
         sentence_start = i + 1
 
     return sentences
+

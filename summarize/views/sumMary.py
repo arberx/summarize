@@ -23,7 +23,7 @@ def create_sentences(article):
 def tokenize_sentences(sentences):
     """Tokenizes sentences using Preprocessor"""
     for sen in sentences:
-        sen.tokens = preprocess.tokenizeText(sen.original)
+        sen.tokens = preprocess.preprocess_text(sen.original)
 
 
 def score_tf_sentences(sentences, article):

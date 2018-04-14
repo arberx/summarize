@@ -1,11 +1,11 @@
-from preprocess import tokenizeText
+from preprocess import preprocess_text
 
 def create_occurrences_dict(string):
     """Given a string, count occurences of preprocessed tokens."""
 
     # Keeps track of preprocessed tokens count
     occurrences = {}
-    tokens = tokenizeText(string)
+    tokens = preprocess_text(string)
 
     # Count occurences of tokens in string
     for token in tokens:
