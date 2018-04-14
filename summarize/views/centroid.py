@@ -23,14 +23,14 @@ def centroid_scoring(article, sentences):
     num_words_for_optimal_sen = 14
 
     # Create the optimal sentence
-    optimal_sentence = create_optimal_sentence(article, num_words_for_optimal_sen)    
+    optimal_sentence = create_optimal_sentence(article, num_words_for_optimal_sen)
 
     for sentence in sentences:
 
         # Find token counts of sentences
         sentence_token_occurrences = {}
         for token in sentence.tokens:
-        
+
             if token not in sentence_token_occurrences:
                 sentence_token_occurrences[token] = 0
             sentence_token_occurrences[token] += 1
@@ -55,4 +55,7 @@ def centroid_scoring(article, sentences):
         optimal_sentence_length = math.sqrt(len(optimal_sentence))
 
         # Calculate cosign similarity
-        sentence.score = dot_product_of_sentences / (optimal_sentence_length * sentence_length)
+        if sentence_length != 0:
+            sentence.score = dot_product_of_sentences / (optimal_sentence_length * sentence_length)
+        else:
+            sentence.score = 0.0

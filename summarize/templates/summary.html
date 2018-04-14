@@ -2,8 +2,6 @@
   {% block content %}
         <center>
           <br>
-          <h1>sumMarize</h1>
-
           {% if context.type %}
 
             <form method="POST" action="{{url_for('submit', _external=True)}}" id='sumform'>
@@ -18,10 +16,22 @@
           {% endif %}
 
           {% if not context.type %}
-            <!-- else show summary results -->
-            {% for result in context.returnList %}
-            <p>{{result.original}}</p>
-            {% endfor %}
+          <div style="width: 100%; overflow: hidden;">
+            <div style="width: 650px; float: left;">
+              <h1>Original Text</h1>
+              <p>{{context.originalText}}</p>
+            </div>
+            <div style="margin-left: 650px;">
+              <h1>Top Sentences</h1>
+              <ol>
+                {% for result in context.returnList %}
+                <li>{{result.original}}</li>
+                <br>
+                <br>
+                {% endfor %}
+              </ol>
+            </div>
+          </div>
           {% endif %}
 
         </center>
