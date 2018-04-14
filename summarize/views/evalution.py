@@ -3,18 +3,18 @@ import sys
 from helpers import create_occurrences_dict
 from centroid import centroid_scoring
 from sumMary import create_sentences, tokenize_sentences, score_tf_sentences, rank_sentences
+from probability import probability_scoring
 import os
 
 
 if __name__ == '__main__':
     files = os.listdir('../../summaries/articleTexts/')
-    # print(sorted(files))
 
     # index of article
     index = 0
 
-    # centroid(c) or regular tf(tf)
-    for algo in ['tf', 'c']:
+    # probability(p), centroid(c) or regular tf(tf)
+    for algo in ['tf', 'c', 'p']:
         for file in sorted(files):
             with open('../../summaries/articleTexts/'+file, 'r') as read_data:
                 article = read_data.read()
@@ -26,6 +26,10 @@ if __name__ == '__main__':
                 # Main algorithm to score
                 if algo == 'tf':
                     score_tf_sentences(sentences, article)
+
+                elif algo == 'p':
+                    probability_scoring(sentences)
+
                 else:
                     centroid_scoring(article, sentences)
 
