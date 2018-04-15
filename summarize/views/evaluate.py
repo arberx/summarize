@@ -3,15 +3,21 @@ from sumMary import create_sentences
 
 
 def fileToText(filename, manual):
+	'''Returns the file as a string.
+	Set manual = 0 for generated summary
+	Set manual = 1 for manual summary
+	Set manual = 3 for full article text'''
 	if manual == 0:
 		fullpath = os.path.join(os.getcwd(),"../..", "summaries/evaluation", filename)
 	elif manual == 1:
 			fullpath = os.path.join(os.getcwd(),"../..", "summaries/sentences", filename)
+	elif manual == 2:
+		fullpath = os.path.join(os.getcwd(),"../..", "summaries/articleTexts", filename)
 	else:
 		print "Non-binary value given for manual flag in fileToText"
 		exit(1)
 	fullpath = os.path.abspath(fullpath)
-	infile = open(fullpath,'r') # TODO change to correct directory
+	infile = open(fullpath,'r')
 	return infile.read()
 
 def fileToSentences(filename, manual):
