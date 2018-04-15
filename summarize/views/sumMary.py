@@ -1,7 +1,11 @@
 import preprocess
+import click
 import sys
 from helpers import create_occurrences_dict
 from centroid import centroid_scoring
+import main
+from evaluate import fileToText
+
 
 class Sentence:
     """Sentence class to help keep track of sentences and their properties"""
@@ -49,20 +53,32 @@ def rank_sentences(sentences, k):
     return sorted(sorted_sens, key=lambda sen: sen.order)
 
 
-if __name__ == '__main__':
+@click.command()
+@click.option('--num_sentences', '-n', default=5, help='Number of sentences to return in summary')
+@click.option('--weighting', '-w', default="tf", help='Weighting scheme to use. Options: tf term frequency, -p, -c centroid')
+@click.argument('article_file')
+def main(article_file, num_sentences, weighting):
+    article = fileToText(article_file, 2) # the 2 option specifies the articleText directory
+    main.main(article, num_sentences)
 
-    article = ""
-    with open(str(sys.argv[1:][0])) as f:
-        article = f.read()
+if __name__ == "__main__":
+    main(sys.argv[1:])
 
-    sentences = create_sentences(article)
-    tokenize_sentences(sentences)
 
-    # Main algorithm to score
-    score_tf_sentences(sentences, article)
-    #centroid_scoring(article, sentences)
+# if __name__ == '__main__':
 
-    sorted_sentences = rank_sentences(sentences, 3)
+#     article = ""
+#     with open(str(sys.argv[1:][0])) as f:
+#         article = f.read()
 
-    for sen in sorted_sentences:
-        print("{}\n".format(sen.original))
+#     sentences = create_sentences(article)
+#     tokenize_sentences(sentences)
+
+#     # Main algorithm to score
+#     score_tf_sentences(sentences, article)
+#     #centroid_scoring(article, sentences)
+
+#     sorted_sentences = rank_sentences(sentences, 3)
+
+#     for sen in sorted_sentences:
+#         print("{}\n".format(sen.original))

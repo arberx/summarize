@@ -16,7 +16,7 @@ from porterstemmer import PorterStemmer
 from preprocess import stemwords, removeStopwords, removeSGML, tokenizeText
 
 
-def main(article):
+def main(article, numSentences):
     '''Input is file that text we want to summarize'''
 
     sentences = create_sentences(article)
@@ -25,7 +25,7 @@ def main(article):
 
     sum_scores(sentences, article)
 
-    sorted_sentences = rank_sentences(sentences, 10)
+    sorted_sentences = rank_sentences(sentences, numSentences)
 
     return sorted_sentences
 
