@@ -25,7 +25,7 @@ def main(article):
 
     tokenize_sentences(sentences)
 
-    sum_scores(sentences, article)
+    score_tf_sentences(sentences, article)
 
     sorted_sentences = rank_sentences(sentences, 10)
 
