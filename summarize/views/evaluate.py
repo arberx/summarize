@@ -1,5 +1,5 @@
 import os
-from sumMary import create_sentences
+import sumMary
 
 
 def fileToText(filename, manual):
@@ -22,7 +22,7 @@ def fileToText(filename, manual):
 
 def fileToSentences(filename, manual):
 	text = fileToText(filename, manual)
-	sentences = create_sentences(text)
+	sentences = sumMary.create_sentences(text)
 	originals = []
 	for sentence in sentences:
 		originals.append(sentence.original)
