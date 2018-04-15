@@ -6,11 +6,11 @@ Professor Rada
 
 # Table of Contents
 
-* [Getting Started](#Getting-Started)
-* [Run from a Web Interface](#Web-Interface)
-* [Run from the Command Line](#Command-Line)
-* [Overview of the Project](#Overview-Of-SumMarize)
-* [References](#References)
+* [Getting Started](#getting-started)
+* [Run from a Web Interface](#web-interface)
+* [Run from the Command Line](#command-line)
+* [Overview of the Project](#overview-of-sumMarize)
+* [References](#references)
 
 ### Project Directory Structure
 ```shellsession
@@ -45,15 +45,15 @@ Professor Rada
 
 The project can be run in two ways:
 
-1) [Through a web interface.](#Web-Interface)
+1) [Through a web interface.](#web-interface)
 
-2) [Run from the Command Line](#Command-Line)
+2) [Run from the Command Line](#command-line)
 
 Please continue to relative sections.
 
 # Web Interface
 
-This will walk you through running the web interface of the project. Please be in the [top level directory](#Project-Directory-Structure), when running the commands.
+This will walk you through running the web interface of the project. Please be in the [top level directory](#project-directory-structure), when running the commands.
 
 1) Create and activate a python2 virtual enviroment by (optional, requires virtualenv package):
 
@@ -76,7 +76,7 @@ You should now be running the the app at [localhost:8000](http://localhost:8000)
 
 # Command Line
 
-Project uses the click library to help with command line arguments, before we walk through the commands please run:
+Project uses the click library to help with command line arguments, before we walk through the commands please the below command in the [top level directory](#project-directory-structure):
 
  `pip install -e .`
 
