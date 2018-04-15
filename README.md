@@ -1,7 +1,7 @@
 # sumMarize
 Final Project for EECS486 at the University of Michigan - Ann Arbor
 
-**Authors**: Arber Xhindoli, Dillion Kesto,  Caroline Saab, Trevor Rees
+**Authors**: *Arber Xhindoli, Dillion Kesto,  Caroline Saab, Trevor Rees*
 
 # Getting Started
 

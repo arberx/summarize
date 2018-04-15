@@ -10,7 +10,6 @@ setup(
     install_requires=[
         'flask',
         'requests',
-        'urllib3',
         'Werkzeug',
         'Jinja2',
         'gunicorn',

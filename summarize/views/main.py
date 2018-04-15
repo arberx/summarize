@@ -70,7 +70,7 @@ def submit():
         elif option == 'c':
             centroid_scoring(text, sentences)
         elif option == 'p':
-            probability_scoring(text)
+            probability_scoring(sentences)
 
         # return the top five ranked sentences
         context['returnList'] = rank_sentences(sentences, 5)
