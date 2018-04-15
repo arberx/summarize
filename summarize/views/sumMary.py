@@ -58,8 +58,8 @@ def rank_sentences(sentences, k):
 
 
 @click.command()
-@click.option('--num_sentences', '-n', default=5, help='Number of sentences to return in summary')
-@click.option('--weighting', '-w', default="tf", help='Weighting scheme to use for scoring.\nAvailable arguments: \ntf - term frequency \np - probability\nc - centroid')
+@click.option('--num_sentences', '-n', default=5, help='Number of sentences to return in summary.')
+@click.option('--weighting', '-w', default="tf", help='Weighting scheme to use for scoring.\nMethods:\ntf - term frequency \np - probability           c - centroid')
 @click.argument('article_file')
 def main(article_file, num_sentences, weighting):
     '''Input is file that text we want to summarize'''
