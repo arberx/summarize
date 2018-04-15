@@ -5,6 +5,7 @@ from helpers import create_occurrences_dict
 from centroid import centroid_scoring
 import evaluate
 
+
 class Sentence:
     """Sentence class to help keep track of sentences and their properties"""
     def __init__(self, original_sentence, orig_order):
@@ -57,7 +58,7 @@ def rank_sentences(sentences, k):
 @click.argument('article_file')
 def main(article_file, num_sentences, weighting):
     '''Input is file that text we want to summarize'''
-    article = evaluate.fileToText(article_file, 2) # the 2 option specifies the articleText directory
+    article = evaluate.fileToText(article_file, 2)  # the 2 option specifies the articleText directory
 
     sentences = create_sentences(article)
 
@@ -67,7 +68,7 @@ def main(article_file, num_sentences, weighting):
         score_tf_sentences(sentences, article)
     elif weighting == "c": # Centroid
         centroid_scoring(article, sentences)
-    else: # Probability scoring
+    else:  # Probability scoring
         probability_scoring(sentences)
 
     sorted_sentences = rank_sentences(sentences, num_sentences)
@@ -78,22 +79,3 @@ def main(article_file, num_sentences, weighting):
 
 if __name__ == "__main__":
     main(sys.argv[1:])
-
-
-# if __name__ == '__main__':
-
-#     article = ""
-#     with open(str(sys.argv[1:][0])) as f:
-#         article = f.read()
-
-#     sentences = create_sentences(article)
-#     tokenize_sentences(sentences)
-
-#     # Main algorithm to score
-#     score_tf_sentences(sentences, article)
-#     #centroid_scoring(article, sentences)
-
-#     sorted_sentences = rank_sentences(sentences, 3)
-
-#     for sen in sorted_sentences:
-#         print("{}\n".format(sen.original))
