@@ -36,6 +36,10 @@ def score_tf_sentences(sentences, article):
     occurrences = create_occurrences_dict(article)
 
     for sentence in sentences:
+        if len(sentence.tokens) == 0:
+            sentence.score = 0.0
+            continue
+
         score = 0.0
         for token in sentence.tokens:
             score += occurrences[token]
