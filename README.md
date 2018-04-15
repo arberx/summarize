@@ -1,9 +1,10 @@
 # sumMarize
-Final Project for EECS486 at the University of Michigan - Ann Arbor
+Final Project for **EECS-486** at the University of Michigan - Ann Arbor
+Professor Rada
 
 **Authors**: *Arber Xhindoli, Dillion Kesto,  Caroline Saab, Trevor Rees*
 
-# Directory
+# Table of Contents
 
 * [Getting Started](#Getting-Started)
 * [Run from a Web Interface](#Web-Interface)
@@ -50,12 +51,11 @@ The project can be run in two ways:
 
 Please continue to relative sections.
 
-
 # Web Interface
 
 This will walk you through running the web interface of the project. Please be in the [top level directory](#Project-Directory-Structure), when running the commands.
 
-1) Create and activate a python2 virtual enviroment by (optional):
+1) Create and activate a python2 virtual enviroment by (optional, requires virtualenv package):
 
     `virtualenv env --no-site-packages -p python`
     `source env/bin/activate`
@@ -72,16 +72,30 @@ This will walk you through running the web interface of the project. Please be i
 
     `./summarizerun`
 
-You should now be running the the app at [localhost:8000](localhost:8000)
+You should now be running the the app at [localhost:8000](http://localhost:8000)
 
 # Command Line
 
+Project uses the click library to help with command line arguments, before we walk through the commands please run:
 
+ `pip install -e .`
 
+Below is an output of the command: `python sumMary.py --help`
 
+```shellsession
+Usage: sumMary.py [OPTIONS] ARTICLE_FILE
 
-# Overview Of sumMarize
+  Input is file that text we want to summarize
 
+Options:
+  -n, --num_sentences INTEGER  Number of sentences to return in summary.
+  -w, --weighting TEXT         Weighting scheme to use for scoring.
+                               Methods:
+                               tf - term frequency
+                               p - probability
+                               c - centroid
+  --help                       Show this message and exit.
+```
+
+The above output described the
 # File Explanation
-
-# References
