@@ -1,5 +1,6 @@
 from preprocess import preprocess_text
 
+
 def create_occurrences_dict(string):
     """Given a string, count occurences of preprocessed tokens."""
 
@@ -11,6 +12,6 @@ def create_occurrences_dict(string):
     for token in tokens:
         if token not in occurrences:
             occurrences[token] = 0
-    occurrences[token] += 1
+        occurrences[token] += 1
 
     return occurrences
