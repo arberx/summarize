@@ -13,7 +13,7 @@ import flask
 from summarize import app
 from sumMary import create_sentences, tokenize_sentences, score_tf_sentences, rank_sentences
 from porterstemmer import PorterStemmer
-from preprocess import stemwords, removeStopwords, removeSGML, tokenizeText
+from preprocess import stemWords, removeStopwords, removeSGML, tokenizeText
 
 
 def main(article):
@@ -23,7 +23,7 @@ def main(article):
 
     tokenize_sentences(sentences)
 
-    sum_scores(sentences, article)
+    score_tf_sentences(sentences, article)
 
     sorted_sentences = rank_sentences(sentences, 10)
 

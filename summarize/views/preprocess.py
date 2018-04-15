@@ -116,7 +116,7 @@ contractionsDict = {
 LIST_OF_STOP = ['a', 'all', 'an', 'and', 'any', 'are', 'as', 'at', 'be', 'been', 'but', 'by', 'few', 'from', 'for', 'have', 'he', 'her', 'here', 'him', 'his', 'how', 'i', 'in', 'is', 'it', 'its', 'many', 'me', 'my', 'none', 'of', 'on', 'or', 'our', 'she', 'some', 'the', 'their', 'them', 'there', 'they', 'that', 'this', 'to', 'us', 'was', 'what', 'when', 'where', 'which', 'who', 'why', 'will', 'with', 'you', 'your']
 
 # Many more stopwords. can choose between the two
-with open( os.getcwd() + '/' + "stopwords.txt") as stop_words_file:
+with open(os.path.join(os.path.realpath(os.path.dirname(__file__)), "stopwords.txt")) as stop_words_file:
     LIST_OF_STOP = stop_words_file.read().split()
 
 # Punctiation to consider to be the end of a sentence
