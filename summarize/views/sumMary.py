@@ -1,8 +1,11 @@
 import preprocess
+import click
 import sys
 from helpers import create_occurrences_dict
 from centroid import centroid_scoring
 from probability import probability_scoring
+import evaluate
+
 
 class Sentence:
     """Sentence class to help keep track of sentences and their properties"""
@@ -38,10 +41,7 @@ def score_tf_sentences(sentences, article):
             score += occurrences[token]
 
         # Normalize score with the length of the sentences
-        # print(sentence.original)
-        if len(sentence.tokens) != 0:
-            score /= len(sentence.tokens)
-
+        score /= len(sentence.tokens)
         sentence.score = score
 
 
@@ -53,21 +53,30 @@ def rank_sentences(sentences, k):
     return sorted(sorted_sens, key=lambda sen: sen.order)
 
 
-if __name__ == '__main__':
-
-    article = ""
-    with open(str(sys.argv[1:][0])) as f:
-        article = f.read()
+@click.command()
+@click.option('--num_sentences', '-n', default=5, help='Number of sentences to return in summary')
+@click.option('--weighting', '-w', default="tf", help='Weighting scheme to use for scoring.\nAvailable arguments: \ntf - term frequency \np - probability\nc - centroid')
+@click.argument('article_file')
+def main(article_file, num_sentences, weighting):
+    '''Input is file that text we want to summarize'''
+    article = evaluate.fileToText(article_file, 2)  # the 2 option specifies the articleText directory
 
     sentences = create_sentences(article)
+
     tokenize_sentences(sentences)
 
-    # Main algorithm to score
-    #score_tf_sentences(sentences, article)
-    #centroid_scoring(article, sentences)
-    #probability_scoring(sentences)
+    if weighting == "tf": # Term frequency
+        score_tf_sentences(sentences, article)
+    elif weighting == "c": # Centroid
+        centroid_scoring(article, sentences)
+    else:  # Probability scoring
+        probability_scoring(sentences)
 
-    sorted_sentences = rank_sentences(sentences, 3)
+    sorted_sentences = rank_sentences(sentences, num_sentences)
 
-    for sen in sorted_sentences:
-        print("{}\n".format(sen.original))
+    for sentence in sorted_sentences:
+        print sentence.original
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

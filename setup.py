@@ -13,6 +13,7 @@ setup(
         'urllib3',
         'Werkzeug',
         'Jinja2',
-        'gunicorn'
+        'gunicorn',
+        'click'
     ],
 )
