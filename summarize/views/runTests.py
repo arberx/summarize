@@ -9,6 +9,8 @@ import os
 
 if __name__ == '__main__':
     files = os.listdir('../../summaries/articleTexts/')
+    if ".DS_Store" in files:
+		files.remove(".DS_Store")
 
     # index of article
     index = 0

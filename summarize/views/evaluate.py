@@ -45,7 +45,26 @@ def precisionAndRecall(generated_summary_file, manual_summary_file):
 	relevant = len(manual_summary)
 
 	# Return precision, recall
-	return float(relevant_and_retrieved)/retrieved, float(relevant_and_retrieved)/relevant
+	return float(relevant_and_retrieved)/retrieved, float(relevant_and_retrieved)/relevant, relevant_and_retrieved, relevant, retrieved
+
+def getAvg(values):
+	total = 0
+	for value in values:
+		total += value
+	return float(total)/len(values)
+
+def printMicroAverages(precisions, recalls):
+	print "MICRO AVERAGES"
+	print "Precision: ", getAvg(precisions)
+	print "Recall: ", getAvg(recalls)
+
+def printMacroAverages(total_relevant_and_retrieved,total_relevant,total_retrieved):
+	macro_precision = total_relevant_and_retrieved/total_retrieved
+	macro_recall = total_relevant_and_retrieved/total_relevant
+
+	print "MACRO AVERAGES"
+	print "Precision: ", macro_precision
+	print "Recall: ", macro_recall
 
 def main():
 	weighting_schemes = ["tf","c","p"]
@@ -55,7 +74,8 @@ def main():
 	manual_summaries_dir = os.path.abspath(os.path.join(os.getcwd(),"../..", "summaries/sentences/"))
 	#generated_summaries = os.listdir(generated_summaries_dir)
 	manual_summaries = os.listdir(manual_summaries_dir)
-	manual_summaries.remove(".DS_Store")
+	if ".DS_Store" in manual_summaries:
+		manual_summaries.remove(".DS_Store")
 
 	# Get names of generated summary files
 	generated_summaries = []
@@ -69,10 +89,26 @@ def main():
 
 	# Compare the results of each weighting scheme to the manual summaries
 	for scheme in weighting_schemes:
+		# For macro averages
+		precisions = []
+		recalls = []
+
+		# For the micro averages
+		total_relevant_and_retrieved = 0
+		total_relevant = 0
+		total_retrieved = 0
+
 		print "     ####### RESULTS FOR", scheme, "#######"
 		for g, m in zip(generated_summaries[start:end], manual_summaries):
-			precision, recall = precisionAndRecall(g,m)
+			precision, recall, inc_RnR, inc_Rel, inc_Ret = precisionAndRecall(g,m)
+			precisions.append(precision)
+			recalls.append(recall)
+			total_relevant_and_retrieved += inc_RnR
+			total_relevant += inc_Rel
+			total_retrieved += inc_Ret
 			print g, "Precision:", precision, "  |  Recall:", recall
+		printMicroAverages(precisions, recalls)
+		printMacroAverages(float(total_relevant_and_retrieved),total_relevant,total_retrieved)
 		start = start + num_files
 		end = end + num_files
 
