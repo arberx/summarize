@@ -1,16 +1,14 @@
 # sumMarize
 Final Project for **EECS-486** at the University of Michigan - Ann Arbor
-Professor Rada
 
 **Authors**: *Arber Xhindoli, Dillion Kesto,  Caroline Saab, Trevor Rees*
 
 # Table of Contents
 
 * [Getting Started](#getting-started)
-* [Run from a Web Interface](#web-interface)
+* [Run with a Web Interface](#web-interface)
 * [Run from the Command Line](#command-line)
-* [Overview of the Project](#overview-of-sumMarize)
-* [References](#references)
+* [File Explanation](#file-explanation)
 
 ### Project Directory Structure
 ```shellsession
@@ -41,6 +39,8 @@ Professor Rada
 │       └── ./summarize/views/sumMary.py
 └── ./summarizerun
 ```
+* The above tree doesn't show testing files.
+
 # Getting Started
 
 The project can be run in two ways:
@@ -58,6 +58,9 @@ This will walk you through running the web interface of the project. Please be i
 1) Create and activate a python2 virtual enviroment by (optional, requires virtualenv package):
 
     `virtualenv env --no-site-packages -p python`
+
+    Activate the virtual enviroment by running:
+
     `source env/bin/activate`
 
 2) Install the summarize package:
@@ -68,7 +71,7 @@ This will walk you through running the web interface of the project. Please be i
 
     `chmod +x summarizerun`
 
-4) Run the python flask app(from top level directory):
+4) Run the python flask app(from top level directory) using the bash script:
 
     `./summarizerun`
 
@@ -76,7 +79,7 @@ You should now be running the the app at [localhost:8000](http://localhost:8000)
 
 # Command Line
 
-Project uses the click library to help with command line arguments, before we walk through the commands please the below command in the [top level directory](#project-directory-structure):
+Project uses the click library to help with command line arguments, before we walk through the commands please run the below command in the [top level directory](#project-directory-structure):
 
  `pip install -e .`
 
@@ -97,5 +100,54 @@ Options:
   --help                       Show this message and exit.
 ```
 
-The above output described the
+The above output describes the example usage of the sumMary.py. Examples commands would be:
+
+ ```shellsession
+    python sumMary.py -n 3 -w tf ../../summaries/articleTexts/b0
+ ```
+
+ This command would summarize this example article, using a **term frequency** scheme and output the **3** top sentences.
+
+ ```shellsession
+    python sumMary.py -n 10 -w p ../../summaries/articleTexts/b0
+ ```
+
+ This command would summarize this example article, using a **optimal sentence(centroid)** scheme and output the **10** top sentences.
+
+
 # File Explanation
+
+Here we will describe the purpose of the main files of the summarize package. Most of which are inside the **/summarize/views/** directory.
+
+*  [**main.py**](/summarize/views/main.py)
+
+    - Contains the necessary code to run the web app, and render the correct html templates located in templates folder.
+
+*  [**sumMary.py**]()
+
+    - This file is the main entry point into the project, it includes all the necessary algorithms from centroid.py, probabilty.py. It also includes the click library, which is useful for commandline arguments.
+
+*  [**centroid.py**]()
+
+    - Includes the centroid algorithm, which creates an optimal vector from the sentences in the document. Then uses cosine similarity to compare this 'optimal' sentence to the rest of the sentences.
+
+*  [**probabilty.py**]()
+
+    - Includes the centroid algorithm, which uses naive bayes. It treats the document as a category, and tries to see which sentence has the highest probability of being in the category.
+
+*  [**preprocess.py**](), [**porterstemmer.py**]()
+
+    - These files were included from Assignment 1 done in class.
+
+* [**evalute.py**]()
+
+    - This file is used to calculate precision and recall comparing our algorihtms results with the manual results we generated(gold standard).
+
+
+* [**runTests.py**]()
+
+    - This file is used to create the test documents using in evalute.py to check the precision and recall values in evalute.py. These testdocuments are created in the directory: **/summaries/evaluation/**. The naming scheme of the file is "website_algorithm" where algorithm can be 'c', 'p', or 'tf'. This refers to the respective algorithms used to create the top 5 sentences.
+
+* [**helper.py**]()
+
+    - Contains functions needed in many of the algorithm.
