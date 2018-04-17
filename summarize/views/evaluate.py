@@ -34,7 +34,7 @@ def precisionAndRecall(generated_summary_file, manual_summary_file):
 	# Convert summary files into lists of sentences
 	generated_summary = fileToSentences(generated_summary_file, 0)
 	manual_summary = fileToSentences(manual_summary_file, 1)
-	#print manual_summary
+	# print manual_summary
 	# Find |intersection of relevant and retrieved|
 	relevant_and_retrieved = len(list(set(generated_summary) & set(manual_summary)))
 
@@ -59,6 +59,7 @@ def printMicroAverages(precisions, recalls):
 	print "Recall: ", getAvg(recalls)
 
 def printMacroAverages(total_relevant_and_retrieved,total_relevant,total_retrieved):
+	print total_relevant_and_retrieved, total_relevant, total_retrieved #DEBUG
 	macro_precision = total_relevant_and_retrieved/total_retrieved
 	macro_recall = total_relevant_and_retrieved/total_relevant
 
@@ -72,7 +73,7 @@ def main():
 	# Get names of manual summary files
 	generated_summaries_dir = os.path.abspath(os.path.join(os.getcwd(),"../..", "summaries/evaluation/"))
 	manual_summaries_dir = os.path.abspath(os.path.join(os.getcwd(),"../..", "summaries/sentences/"))
-	#generated_summaries = os.listdir(generated_summaries_dir)
+
 	manual_summaries = os.listdir(manual_summaries_dir)
 	if ".DS_Store" in manual_summaries:
 		manual_summaries.remove(".DS_Store")
@@ -103,6 +104,9 @@ def main():
 			precision, recall, inc_RnR, inc_Rel, inc_Ret = precisionAndRecall(g,m)
 			precisions.append(precision)
 			recalls.append(recall)
+			if inc_Rel != 5:
+				print g, total_relevant_and_retrieved, total_relevant, total_retrieved
+				print inc_RnR, inc_Rel, inc_Ret
 			total_relevant_and_retrieved += inc_RnR
 			total_relevant += inc_Rel
 			total_retrieved += inc_Ret
