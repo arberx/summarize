@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from math import sqrt
 # This file uses a probabilistic method similar to naiveBayes to score
 # sentences within a document, using the full article as the class.
 
@@ -43,7 +44,7 @@ def trainNaiveBayes(sentences):
 
 	# Calculate the conditional probability for each word
 	for xk, value in tokenDict.items():
-		probDict[xk] = (value + 1.0) / (float(textLen) + float(vocabulary))
+		probDict[xk] = (value) / float(textLen)
 
 	return probDict
 
@@ -73,5 +74,5 @@ def probability_scoring(sentences):
 			else:
 				sentence.score += probDict[token]
 
-			sentence.score /= len(sentence.tokens)
+			#sentence.score /= len(sentence.tokens)
 
