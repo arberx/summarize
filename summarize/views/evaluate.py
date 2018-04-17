@@ -34,7 +34,7 @@ def precisionAndRecall(generated_summary_file, manual_summary_file):
 	# Convert summary files into lists of sentences
 	generated_summary = fileToSentences(generated_summary_file, 0)
 	manual_summary = fileToSentences(manual_summary_file, 1)
-
+	#print manual_summary
 	# Find |intersection of relevant and retrieved|
 	relevant_and_retrieved = len(list(set(generated_summary) & set(manual_summary)))
 
