@@ -140,7 +140,7 @@ Here we will describe the purpose of the main files of the summarize package. Mo
 
     - Includes the centroid algorithm, which creates an optimal vector from the sentences in the document. Then uses cosine similarity to compare this 'optimal' sentence to the rest of the sentences.
 
-*  [**probabilty.py**](/summarize/views/probabilty.py)
+*  [**probability.py**](/summarize/views/probability.py)
 
     - Includes the centroid algorithm, which uses naive bayes. It treats the document as a category, and tries to see which sentence has the highest probability of being in the category.
 
@@ -148,7 +148,7 @@ Here we will describe the purpose of the main files of the summarize package. Mo
 
     - These files were included from Assignment 1 done in class.
 
-* [**evalute.py**](/summarize/views/evalute.py)
+* [**evaluate.py**](/summarize/views/evaluate.py)
 
     - This file is used to calculate precision and recall comparing our algorihtms results with the manual results we generated (gold standard).
 
@@ -157,6 +157,6 @@ Here we will describe the purpose of the main files of the summarize package. Mo
 
     - This file is used to create the test documents using in evalute.py to check the precision and recall values in evalute.py. These test documents are created in the directory: **/summaries/evaluation/**. The naming scheme of the file is "website_algorithm" where algorithm can be 'c', 'p', or 'tf'. This refers to the respective algorithms used to create the top 5 sentences.
 
-* [**helper.py**](/summarize/views/helper.py)
+* [**helpers.py**](/summarize/views/helpers.py)
 
     - Contains functions needed in the centroid.py, probability.py.
