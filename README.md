@@ -141,13 +141,13 @@ Here we will describe the purpose of the main files of the summarize package. Mo
 
 * [**evalute.py**](/summarize/views/evalute.py)
 
-    - This file is used to calculate precision and recall comparing our algorihtms results with the manual results we generated(gold standard).
+    - This file is used to calculate precision and recall comparing our algorihtms results with the manual results we generated (gold standard).
 
 
 * [**runTests.py**](/summarize/views/runTests.py)
 
-    - This file is used to create the test documents using in evalute.py to check the precision and recall values in evalute.py. These testdocuments are created in the directory: **/summaries/evaluation/**. The naming scheme of the file is "website_algorithm" where algorithm can be 'c', 'p', or 'tf'. This refers to the respective algorithms used to create the top 5 sentences.
+    - This file is used to create the test documents using in evalute.py to check the precision and recall values in evalute.py. These test documents are created in the directory: **/summaries/evaluation/**. The naming scheme of the file is "website_algorithm" where algorithm can be 'c', 'p', or 'tf'. This refers to the respective algorithms used to create the top 5 sentences.
 
 * [**helper.py**](/summarize/views/helper.py)
 
-    - Contains functions needed in many of the algorithm.
+    - Contains functions needed in the centroid.py, probability.py.
