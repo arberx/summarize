@@ -123,31 +123,31 @@ Here we will describe the purpose of the main files of the summarize package. Mo
 
     - Contains the necessary code to run the web app, and render the correct html templates located in templates folder.
 
-*  [**sumMary.py**]()
+*  [**sumMary.py**](/summarize/views/sumMary.py)
 
     - This file is the main entry point into the project, it includes all the necessary algorithms from centroid.py, probabilty.py. It also includes the click library, which is useful for commandline arguments.
 
-*  [**centroid.py**]()
+*  [**centroid.py**](/summarize/views/centroid.py)
 
     - Includes the centroid algorithm, which creates an optimal vector from the sentences in the document. Then uses cosine similarity to compare this 'optimal' sentence to the rest of the sentences.
 
-*  [**probabilty.py**]()
+*  [**probabilty.py**](/summarize/views/probabilty.py)
 
     - Includes the centroid algorithm, which uses naive bayes. It treats the document as a category, and tries to see which sentence has the highest probability of being in the category.
 
-*  [**preprocess.py**](), [**porterstemmer.py**]()
+*  [**preprocess.py**](/summarize/views/preprocess.py), [**porterstemmer.py**](/summarize/views/porterstemmer.py)
 
     - These files were included from Assignment 1 done in class.
 
-* [**evalute.py**]()
+* [**evalute.py**](/summarize/views/evalute.py)
 
     - This file is used to calculate precision and recall comparing our algorihtms results with the manual results we generated(gold standard).
 
 
-* [**runTests.py**]()
+* [**runTests.py**](/summarize/views/runTests.py)
 
     - This file is used to create the test documents using in evalute.py to check the precision and recall values in evalute.py. These testdocuments are created in the directory: **/summaries/evaluation/**. The naming scheme of the file is "website_algorithm" where algorithm can be 'c', 'p', or 'tf'. This refers to the respective algorithms used to create the top 5 sentences.
 
-* [**helper.py**]()
+* [**helper.py**](/summarize/views/helper.py)
 
     - Contains functions needed in many of the algorithm.
