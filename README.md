@@ -148,7 +148,7 @@ Here we will describe the purpose of the main files of the summarize package. Mo
 
     - These files were included from Assignment 1 done in class.
 
-* [**evalute.py**](/summarize/views/evalute.py)
+* [**evaluate.py**](/summarize/views/evaluate.py)
 
     - This file is used to calculate precision and recall comparing our algorihtms results with the manual results we generated (gold standard).
 
