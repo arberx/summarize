@@ -40,7 +40,7 @@ Final Project for **EECS-486** at the University of Michigan - Ann Arbor
 │       └── ./summarize/views/sumMary.py
 └── ./summarizerun
 ```
-* The above tree doesn't show testing files.
+* The above tree doesn't show testing files. Located in the **/summaries/** directory.
 
 # Getting Started
 
