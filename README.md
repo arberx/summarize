@@ -8,6 +8,7 @@ Final Project for **EECS-486** at the University of Michigan - Ann Arbor
 * [Getting Started](#getting-started)
 * [Run with a Web Interface](#web-interface)
 * [Run from the Command Line](#command-line)
+* [Data Set](#data-set)
 * [File Explanation](#file-explanation)
 
 ### Project Directory Structure
@@ -114,6 +115,14 @@ The above output describes the example usage of the sumMary.py. Examples command
 
  This command would summarize this example article, using a **optimal sentence(centroid)** scheme and output the **10** top sentences.
 
+
+# Data Set
+
+The datasets used in the project were gathered manaully. They are located in the **/summaries/articleTexts/** folder. The sites we used to gather the article were: Bloomberg, CNN, Mgoblog, and Washington Post.
+
+An example of the file naming scheme: 'b_0' which represents that this article was taken from Bloomberg.com. Similary 'm' for Mgoblog, 'c' for CNN, and 'w' for the Washington Post.
+
+The articles were then manually summarized. This involved a person reading the article, and choosing the top 5 sentences in the text that best represent(summarize) the article. These 5 sentences were then used as a golden standard to compare our methods.
 
 # File Explanation
 
