@@ -123,7 +123,7 @@ with open(os.path.join(os.path.realpath(os.path.dirname(__file__)), "stopwords.t
 STOP_PUNCTUATION = ['.']
 
 # Blacklist of words that have periods in them
-BLACK_LIST_WORDS = ["u.s.a.", "u.s.", "col.", "mr.", "mrs.", "ms.", "prof.", "dr.", "gen.", "rep.", "sen.", "st.", "sr.", "jr.", "ph.", "ph.d.", "m.d.", "b.a.", "m.a.", "d.d.", "d.d.s." "b.c.", "a.m.", "p.m.", "a.d.", "b.c.e.", "c.e.", "i.e.", "etc.", "e.g.", "al."]
+BLACK_LIST_WORDS = ["...", "u.s.a.", "u.s.", "col.", "mr.", "mrs.", "ms.", "prof.", "dr.", "gen.", "rep.", "sen.", "st.", "sr.", "jr.", "ph.", "ph.d.", "m.d.", "b.a.", "m.a.", "d.d.", "d.d.s." "b.c.", "a.m.", "p.m.", "a.d.", "b.c.e.", "c.e.", "i.e.", "etc.", "e.g.", "al."]
 
 def removeSGML(text):
 	tagRemover = re.compile('<.*?>')
