@@ -157,6 +157,6 @@ Here we will describe the purpose of the main files of the summarize package. Mo
 
     - This file is used to create the test documents using in evalute.py to check the precision and recall values in evalute.py. These test documents are created in the directory: **/summaries/evaluation/**. The naming scheme of the file is "website_algorithm" where algorithm can be 'c', 'p', or 'tf'. This refers to the respective algorithms used to create the top 5 sentences.
 
-* [**helper.py**](/summarize/views/helper.py)
+* [**helpers.py**](/summarize/views/helpers.py)
 
     - Contains functions needed in the centroid.py, probability.py.
