@@ -140,7 +140,7 @@ Here we will describe the purpose of the main files of the summarize package. Mo
 
     - Includes the centroid algorithm, which creates an optimal vector from the sentences in the document. Then uses cosine similarity to compare this 'optimal' sentence to the rest of the sentences.
 
-*  [**probabilty.py**](/summarize/views/probabilty.py)
+*  [**probability.py**](/summarize/views/probability.py)
 
     - Includes the centroid algorithm, which uses naive bayes. It treats the document as a category, and tries to see which sentence has the highest probability of being in the category.
 
