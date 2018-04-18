@@ -1,11 +1,4 @@
-'''
-Final Project EECS486
-
-evaluate.py
-'''
-
 import os
-
 import sumMary
 
 
@@ -105,8 +98,13 @@ def main():
 		total_relevant_and_retrieved = 0
 		total_relevant = 0
 		total_retrieved = 0
+		num0s = 0
+		num2s = 0
+		num4s = 0
+		num6s = 0
+		num8s = 0
 
-		print "     ####### RESULTS FOR", scheme, "#######"
+		#print "     ####### RESULTS FOR", scheme, "#######"
 		for g, m in zip(generated_summaries[start:end], manual_summaries):
 			precision, recall, inc_RnR, inc_Rel, inc_Ret = precisionAndRecall(g,m)
 			precisions.append(precision)
@@ -117,12 +115,41 @@ def main():
 			total_relevant_and_retrieved += inc_RnR
 			total_relevant += inc_Rel
 			total_retrieved += inc_Ret
-			print g, "Precision:", precision, "  |  Recall:", recall
-		printMicroAverages(precisions, recalls)
-		printMacroAverages(float(total_relevant_and_retrieved),total_relevant,total_retrieved)
+			#print g, "Precision:", precision, "  |  Recall:", recall
+			if precision == 0:
+				num0s+= 1
+			elif precision == 0.2:
+				num2s+= 1
+			elif precision == 0.4:
+				num4s+= 1
+			elif precision == 0.6:
+				num6s+= 1
+			elif precision == 0.8:
+				num8s+= 1
+			else:
+				print "Unknown value found", precision
+			print g + ",", str(precision)
+		#printMicroAverages(precisions, recalls)
+		#printMacroAverages(float(total_relevant_and_retrieved),total_relevant,total_retrieved)
+		print "0.0,", num0s
+		print "0.2,", num2s
+		print "0.4,", num4s
+		print "0.6,", num6s
 		start = start + num_files
 		end = end + num_files
 
 
 if __name__ == "__main__":
 	main()
+
+# summaries_evaluation b0_tf
+
+# # Tests
+# generated_summaries = [["I love cats.","I love every kind of cat.", "I just want to hold all of them, but I can't.", "Can't hug every cat."],["I love cats.","I love every kind of cat."],["I love cats.","I love every kind of cat.","So anyway, I am a cat lover, and I love to run."]]
+# file = "cats_manual_summary.txt"
+
+#for generated_summary in generated_summaries:
+	#print precision(generated_summary, file, 1_or_recall)
+
+#fileToText("hello",1)
+#fileToText("itsME",0)
