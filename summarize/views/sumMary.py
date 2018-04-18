@@ -1,3 +1,10 @@
+'''
+Final Project EECS486
+
+sumMary.py
+'''
+
+
 import preprocess
 import click
 import sys

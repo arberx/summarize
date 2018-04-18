@@ -1,3 +1,10 @@
+'''
+Final Project EECS486
+
+centroid.py
+'''
+
+
 from helpers import create_occurrences_dict
 import math
 

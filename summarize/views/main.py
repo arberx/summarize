@@ -1,7 +1,9 @@
 #!/usr/bin/python
 
 '''
-Summarize application made for EECS486 Project 4
+Final Project EECS486
+
+main.py
 '''
 
 import sys

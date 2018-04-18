@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+'''
+Final Project EECS486
+
+probability.py
+'''
+
+
 from math import sqrt
 # This file uses a probabilistic method similar to naiveBayes to score
 # sentences within a document, using the full article as the class.

@@ -1,4 +1,11 @@
+'''
+Final Project EECS486
+
+evaluate.py
+'''
+
 import os
+
 import sumMary
 
 
@@ -119,15 +126,3 @@ def main():
 
 if __name__ == "__main__":
 	main()
-
-# summaries_evaluation b0_tf
-
-# # Tests
-# generated_summaries = [["I love cats.","I love every kind of cat.", "I just want to hold all of them, but I can't.", "Can't hug every cat."],["I love cats.","I love every kind of cat."],["I love cats.","I love every kind of cat.","So anyway, I am a cat lover, and I love to run."]]
-# file = "cats_manual_summary.txt"
-
-#for generated_summary in generated_summaries:
-	#print precision(generated_summary, file, 1_or_recall)
-
-#fileToText("hello",1)
-#fileToText("itsME",0)

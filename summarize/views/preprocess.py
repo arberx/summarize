@@ -1,4 +1,8 @@
-# preprocess.py
+'''
+Final Project EECS486
+
+preprocess.py
+'''
 
 import sys
 import re
@@ -426,6 +430,6 @@ def split_into_sentences(string):
 		# this token is likely to be the end of the sentence.
 		sentences.append(" ".join(words[sentence_start:i + 1]))
 		sentence_start = i + 1
-		
+
 	return sentences
 

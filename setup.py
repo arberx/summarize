@@ -13,6 +13,7 @@ setup(
         'Werkzeug',
         'Jinja2',
         'gunicorn',
-        'click'
+        'click',
+        'bs4'
     ],
 )

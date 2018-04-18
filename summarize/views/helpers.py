@@ -1,3 +1,9 @@
+'''
+Final Project EECS486
+
+helpers.py
+'''
+
 from preprocess import preprocess_text
 
 
