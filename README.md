@@ -14,6 +14,7 @@ Final Project for **EECS-486** at the University of Michigan - Ann Arbor
 ### Project Directory Structure
 ```shellsession
 .
+├── ./EECS486-final-report.tex
 ├── ./README.md
 ├── ./setup.py
 ├── ./spec.txt
@@ -21,14 +22,16 @@ Final Project for **EECS-486** at the University of Michigan - Ann Arbor
 ├── ./summarize
 │   ├── ./summarize/__init__.py
 │   ├── ./summarize/static
-│   │   └── ./summarize/static/css
-│   │       └── ./summarize/static/css/main.css
+│   │   ├── ./summarize/static/css
+│   │   │   └── ./summarize/static/css/main.css
+│   │   └── ./summarize/static/sumMarize_logo.png
 │   ├── ./summarize/templates
 │   │   ├── ./summarize/templates/base.html
 │   │   └── ./summarize/templates/summary.html
 │   └── ./summarize/views
 │       ├── ./summarize/views/centroid.py
 │       ├── ./summarize/views/evaluate.py
+│       ├── ./summarize/views/evaluate_to_csv.py
 │       ├── ./summarize/views/helpers.py
 │       ├── ./summarize/views/__init__.py
 │       ├── ./summarize/views/main.py
@@ -38,7 +41,8 @@ Final Project for **EECS-486** at the University of Michigan - Ann Arbor
 │       ├── ./summarize/views/runTests.py
 │       ├── ./summarize/views/stopwords.txt
 │       └── ./summarize/views/sumMary.py
-└── ./summarizerun
+├── ./summarizerun
+└── ./summary-generic-text.pdf
 ```
 * The above tree doesn't show testing files. Located in the **/summaries/** directory.
 
