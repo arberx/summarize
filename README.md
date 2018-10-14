@@ -1,6 +1,8 @@
 # sumMarize
 Final Project for **EECS-486** at the University of Michigan - Ann Arbor
 
+sumMarize uses different numerical techniques to analyze and then produce the top 5 sentences that best summarize a piece of text. 
+
 **Authors**: *Arber Xhindoli, Dillion Kesto,  Caroline Saab, Trevor Rees*
 
 # Table of Contents
